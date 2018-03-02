@@ -1,43 +1,43 @@
-from Dataset import *
 from ..support.expressions import *
 from ..support.momentum import *
 from ..support.fenics_optimizations import *
 from ..constants import *
 
-
 import fenics as fc
 import dolfin as df
 
-
 '''
 Class: IceCube
-Argument list: fileName with all of the data
-Purpose: This is the black box that runs the model. It runs the model and stores the output in various arrays.
-This will run the model all at once instead of updating a GUI every tick.
+Argument list: fileName with all of the data, timeEnd, timeStep
+Purpose: This is the black box that runs the model written by Jesse Johnson. It stores the output in various arrays.
+This can run the model all at once instead of updating a GUI every tick. 
 
 LEGEND:
-BB, HH, TD, TB, TX, TY, TZ, us, ub
+BB: Bed
+HH: Height above bed
+TD: Tau sub d
+TB: Tau sub b
+TX: Tau sub xx
+TY: Tau sub xy
+TZ: Tau sub xz
+us: Velocity of ice on surface of ice
+ub: Velocity of ice on the bed
 
 
-
-
-
-
-Return types, values: None
-Dependencies: dolfin, fenics, support functions(written by Dr. Jesse Johnson), h5 file with the initial datasets
-Creator: James Stauder
+Dependencies: dolfin, fenics, support functions(written by Dr. Jesse Johnson)
+Creator: James Stauder/Jesse Johnson
 Date created:2/23/18
-Last edited: 2/23/18
+Last edited: 3/2/18
 '''
 
 
-#Unit Test: Calculating outside of range
+# TODO: Unit Test: Calculating outside of range
 class IceCube():
     def __init__(self, fileName, timeEnd, timeStep):
 
         self.times = []
-        self.BB = [] 
-        self.HH = [] 
+        self.BB = []
+        self.HH = []
         self.TD = []
         self.TB = []
         self.TX = []
@@ -70,8 +70,8 @@ class IceCube():
         self.Phi = df.TestFunction(self.V)
         self.u, self.u2, self.H = df.split(self.U)
         self.phi, self.phi1, self.xsi = df.split(self.Phi)
-        
-        self.un  = df.Function(self.Q)
+
+        self.un = df.Function(self.Q)
         self.u2n = df.Function(self.Q)
 
         self.zero_sol = df.Function(self.Q)
@@ -169,11 +169,10 @@ class IceCube():
 
         self.inFile.close()
 
-
     def runAllSteps(self):
         while self.t < self.timeEnd:
             self.runNextStep()
-            
+
     def runNextStep(self):
         self.coupled_problem = df.NonlinearVariationalProblem(self.R, self.U, bcs=[self.dbc0, self.dbc1, self.dbc3],
                                                               J=self.J)
@@ -208,7 +207,3 @@ class IceCube():
 
         return self.BB[-1], self.HH[-1], self.TD[-1], self.TB[-1], self.TX[-1], self.TY[-1], self.TZ[-1], self.us[-1], \
                self.ub[-1]
-
-
-
-

@@ -1,34 +1,28 @@
-##################################
-#Creator: James Stauder
-#Creation Date: 1/30/18
-#Last edit Date: 2/05/18
-#Purpose: Class to make Dataset objects
-#Parameters: 
-#name -> name of dataset
-#pen -> color of pen to use in plotting
-#Attributes:
-#name -> name of dataset
-#pen -> color of pen to use in plotting
-#interp -> interpolator based 
-#
-#
-##################################
-
-
-import h5py
-import pyqtgraph as pg
-from ..constants import *
 from ..createColorMaps import *
+
 from pylab import sqrt, linspace
 from scipy.interpolate import RectBivariateSpline
+
 import numpy as np
-import time
+
+
+'''
+Class: Dataset
+Argument list: name of dataset, pen type(used for plotting)
+Purpose: This is the class of datasets. This will store velocity, smb, etc. This takes the Velocity in X and Y direction
+and makes one dataset of just Velocity. This velocity dataset ONLY stores the magnitude but not direction.
+
+Dependencies: pylabs sqrt and linspace, RectBivariateSplint, numpy
+Creator: James Stauder
+Date created:2/23/18
+Last edited: 3/2/18
+'''
+
 
 class Dataset():
     def __init__(self, name, pen):
         self.name = name
         self.pen = pen
-
 
         #TODO can these be changed to globals? Takes no time to do but it is done on repeat
         bed_xarray = linspace(map['proj_x0'], map['proj_x1'], map['x1'], endpoint=True)
@@ -37,6 +31,7 @@ class Dataset():
 
         if self.name == 'velocity':
             self.data, self.vx, self.vy = self.setData(name)
+
             self.vxInterp = RectBivariateSpline(bed_xarray, bed_yarray, np.flipud(self.vx).transpose())
             self.vyInterp = RectBivariateSpline(bed_xarray, bed_yarray, np.flipud(self.vy).transpose())
 
@@ -46,7 +41,7 @@ class Dataset():
         self.interp   = RectBivariateSpline(bed_xarray, bed_yarray, np.flipud(self.data).transpose())
 
         #Only create color map if we wish to render possible in the future where we wish to create Dataset for backend web
-        if render and name != 'VX' and name != 'VY':
+        if name != 'VX' and name != 'VY':
             createColorMap(self)
             self.pathPlotItem = pg.PlotDataItem([0,0], pen=self.pen)
 

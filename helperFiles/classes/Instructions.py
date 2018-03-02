@@ -1,6 +1,8 @@
 from pyqtgraph.Qt import QtGui
-
-
+'''
+Class: Instructions
+Purpose: Displays instruction information in new window
+'''
 class Instructions:
     def __init__(self, parent):
         self.mw = QtGui.QMainWindow(parent)

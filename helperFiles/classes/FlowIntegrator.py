@@ -1,17 +1,18 @@
-
-import numpy as np
 from scipy.integrate import ode
-from scipy import interpolate
-from scipy import optimize
+
 from Dataset import *
-from ..math_functions import *
 from Marker import *
 
-"""
-Integrates along flow line.
-Author: Jake
-"""
+'''
+Class: FlowIntegrator
+Integration class developed my Jake Downs. 
 
+
+Dependencies: scipy ode
+Creator: Jake Downs
+Date created: Unknown
+Last edited: 3/2/18
+'''
 
 class FlowIntegrator():
 
@@ -78,13 +79,6 @@ class FlowIntegrator():
             y = u[1]
             d = u[2]
 
-            '''
-            cx, cy = colorCoord(x,y)
-
-                
-            
-            flowline[count] = (Marker(cx,cy, x, y, whichWidget))
-            '''
             flowline[count] = [x,y]
 
 
@@ -98,31 +92,7 @@ class FlowIntegrator():
             vy = self.vyDataSet.getInterpolatedValue(x,y)
             v_mag = np.sqrt(vx**2 + vy**2)
 
-        """
-        # Last point along the curve
-        x_last = x0
-        y_last = y0
 
-        # Desired spacing between points on curve
-        spacing = 15.0
-
-        # Distance from point on curve at time t to last point
-        def f(t):
-            return (np.sqrt( (x_interp(t) - x_last)**2 + (y_interp(t) - y_last)**2) - spacing)
-
-        t0 = 0.
-        sample_ts = []
-        try :
-            while t0 <= 1.0:
-                t0 = optimize.brentq(f, float(t0), 1.0, xtol = 1e-5)
-                x_last = x_interp(t0)
-                y_last = y_interp(t0)
-                xs_spaced.append(x_last)
-                ys_spaced.append(y_last)
-                sample_ts.append(t0)
-        except:
-            # Catches exception that f must have opposite signs at ends of interval
-            pass"""
 
 
         return flowline

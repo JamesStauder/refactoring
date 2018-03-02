@@ -1,11 +1,11 @@
 import pyqtgraph as pg
 from dolfin import Constant
 
-map = {'x0':0, 'y0':0,  'x1':10018, 'y1':17946,
-       'cmap_x0':0, 'cmap_y0':0,
-       'cmap_x1':10018, 'cmap_y1':17946,
-       'proj_x0':-637925, 'proj_x1':864625,
-       'proj_y0':-657675, 'proj_y1':-3349425,
+map = {'x0': 0, 'y0': 0,  'x1': 10018, 'y1': 17946,
+       'cmap_x0': 0, 'cmap_y0': 0,
+       'cmap_x1': 10018, 'cmap_y1': 17946,
+       'proj_x0': -637925, 'proj_x1': 864625,
+       'proj_y0': -657675, 'proj_y1': -3349425,
        'cmap_proj_x0': -637925, 'cmap_proj_x1': 864625,
        'cmap_proj_y0': -657675, 'cmap_proj_y1': -3349425}
 
@@ -27,8 +27,6 @@ globalConstants = {'isPathIntLine': False,
                    }
 
 
-
-render = True
 
 skinnyBlackPlotPen = pg.mkPen(color=(0, 0, 0), width=1)
 whitePlotPen  = pg.mkPen(color=(255, 255, 255), width=2)

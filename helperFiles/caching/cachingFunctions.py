@@ -2,7 +2,6 @@ import fenics as fc
 from scipy.interpolate import interp1d
 import numpy as np
 
-
 '''
 Function: dataToHDF5
 Argument list: fileName,distanceData, thicknessPathData, bedPathData, surfacePathData, smbPathData, velocityPathData, 
@@ -16,10 +15,11 @@ Last edited: 2/23/18
 '''
 
 
-def dataToHDF5(fileName,distanceData, thicknessPathData, bedPathData, surfacePathData, smbPathData, velocityPathData, resolution=1000):
-    '''
-    Create interps for each of our variables
-    '''
+def dataToHDF5(fileName, distanceData, thicknessPathData, bedPathData, surfacePathData, smbPathData, velocityPathData,
+               resolution=1000):
+
+
+    # Create interps for each of our variables
     thickness1dInterp = interp1d(distanceData, thicknessPathData)
     bed1dInterp = interp1d(distanceData, bedPathData)
     surface1dInterp = interp1d(distanceData, surfacePathData)

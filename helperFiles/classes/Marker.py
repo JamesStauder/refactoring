@@ -1,5 +1,3 @@
-import pyqtgraph as pg
-from ..constants import *
 from ..math_functions import *
 
 class Marker:

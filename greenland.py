@@ -1,23 +1,16 @@
 import time
 import sys
-from helperFiles.classes.BlackBox import *
-from helperFiles.classes.mainWindow import *
+from helperFiles.classes.MainWindow import *
 
-##################################
-#Creator: James Stauder
-#Creation Date: 1/30/18
-#Last edit Date: 2/02/18
-#Purpose: TODO AFTER CLEANUP
-#
-#
-#
-#
-##################################
+'''
+Creator: James Stauder
+Creation Date: 1/30/18
+Last edit Date: 2/02/18
+Purpose: TODO AFTER CLEANUP
+'''
 
-
-
-
-'''Notes:
+'''
+Notes:
 Reformatting Patricks tool.
 Current progress:
 greenland: line 0
@@ -27,8 +20,6 @@ gui.py: DONE -> mainWindow
 
 
 '''
-
-
 
 '''
 Main function
@@ -41,19 +32,19 @@ Creator: James Stauder
 Date created: 1/31/18
 Last edited: 2/02/18
 '''
+
+
 def main(argv):
 
-    if(len(argv) > 1):
-        if("--help" in argv):
+    if len(argv) > 1:
+        if "--help" in argv:
             printMainMenu()
             sys.exit()
-        for argument in argv:
+        for _ in argv:
             print('hello')
     else:
-
-        
         app = QApplication(sys.argv)
-        mw = mainWindow()
+        mw = MainWindow()
         mw.show()
         datasetDict = createInitialDataSets()
 
@@ -61,21 +52,10 @@ def main(argv):
         datasetDict['velocity'].imageItem.hoverEvent = mw.mouseMove
         mw.datasetDict = datasetDict
         mw.createIntegrator()
-        
-
-
 
         addToImageIconContainer(mw, datasetDict)
 
-
-
-
-
-
-
         sys.exit(app.exec_())
-
-
 
 
 '''
@@ -89,7 +69,10 @@ Dependencies: None
 Creator: James Stauder
 Date created: 2/5/18
 Last edited: 2/5/18
+# TODO Can move this to init of MW
 '''
+
+
 def addToImageIconContainer(mw, datasetDict):
     mw.imageIconContainer.addWidget(datasetDict['velocity'].plotWidget)
     mw.imageIconContainer.setCurrentWidget(datasetDict['velocity'].plotWidget)
@@ -100,15 +83,8 @@ def addToImageIconContainer(mw, datasetDict):
     mw.imageIconContainer.addWidget(datasetDict['t2m'].plotWidget)
     mw.imageIconContainer.addWidget(datasetDict['smb'].plotWidget)
 
-
     for key in datasetDict:
         datasetDict[key].pathPlotItem.clear()
-
-
-
-    
-
-
 
 '''
 Function: printMainMenu:
@@ -120,12 +96,13 @@ Creator: James Stauder
 Date created: 1/31/18
 Last edited: 1/31/18
 '''
+
+
 def printMainMenu():
     print("Greenland Ice Sheet modeling tool")
     print("usage: greenland.py [-h]")
     print("optional arguments:")
     print("     --help  show help message and exit")
-
 
 
 '''
@@ -140,18 +117,12 @@ Last edited: 1/31/18
 '''
 
 
-# TODO: seperate into seperate functions
-# TODO: Does not need to be done in the black box
 def createInitialDataSets():
     print "Creating data sets"
     t0 = time.time()
 
     datasetDict = {}
-    """
-    Read in dimensions of bed
-    at point of comment x = 1670, y = 2991
-    read in last values of x and y and map to the object map
-    """
+
     dataFile = h5py.File(dataFileName, 'r')
     map['x1'] = len(dataFile['bed'][:][0])
     map['y1'] = len(dataFile['bed'][:])
@@ -180,11 +151,6 @@ def createInitialDataSets():
 
     print "Loaded all data sets in ", time.time() - t0, " seconds"
     return datasetDict
-
-
-
-
-
 
 if __name__ == '__main__':
     main(sys.argv)
