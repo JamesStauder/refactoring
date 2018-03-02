@@ -1,0 +1,8 @@
+
+
+What black box needs to do: Parameters: arrays of data for every variable
+Create interpolator based on 1d line for each dataset
+N = len(anyArray)
+fenics interval mesh (Number points, start point, end point)
+
+runModel function
