@@ -32,7 +32,7 @@ class MainWindow(QMainWindow):
         self.lengthOfFlowline = 300
         self.flowlines = []
         self.flowlineMarkers = []
-        self.integratorPerMarker = 7
+        self.integratorPerMarker = 10
 
         '''
         Side widget with button
@@ -126,6 +126,8 @@ class MainWindow(QMainWindow):
 
         # Kind of strange way. Possibly able to do this differently
         self.imageIconContainer.setCurrentWidget(self.datasetDict[indexToDatasetDict[index]].plotWidget)
+        self.datasetDict[indexToDatasetDict[index]].imageItem.hoverEvent = self.mouseMove
+        self.datasetDict[indexToDatasetDict[index]].imageItem.mouseClickEvent = self.mouseClick
 
     def mouseClick(self, e):
 
@@ -185,8 +187,20 @@ class MainWindow(QMainWindow):
             self.whichMarkerSelected = None
             self.textOut.clear()
 
-    # Move marker.
-    # TODO: FINISH THIS
+
+
+    '''
+    Function: mouseMove
+    Argument list: None
+    Purpose: This function is used to move the marker that is selected and create a new integration path. 
+    Return types, values: None
+    Dependencies: None
+    Creator: James Stauder
+    Date created: 2/25/18
+    Last edited: 3/2/18
+    TODO: This can be a bit confusing to read. The code is kind of wordy. We could possibly redraw flowline with the 
+    display Markers function but that would require some changes to the Markers function to take an index.
+    '''
     def mouseMove(self, e):
         if self.isMarkerSelected:
 
@@ -214,54 +228,41 @@ class MainWindow(QMainWindow):
                     self.flowlineMarkers[self.selectedMarkerPosition[0]][i])
 
                 # get the flowline position of the new marker
-                newPosition = self.flowlines[whichFlowlineSelected][indexSelected + i * self.integratorPerMarker]
+                newPosition = self.flowlines[whichFlowlineSelected][i * self.integratorPerMarker]
                 cx, cy = colorCoord(newPosition[0], newPosition[1])
+
+                # Create new marker with new data
                 self.flowlineMarkers[self.selectedMarkerPosition[0]][i] = Marker(cx, cy, newPosition[0], newPosition[1],
                                                                                  self.imageIconContainer.currentWidget())
+            # This section redraws the new markers
+            for i in range(self.selectedMarkerPosition[1] + 1, len(self.flowlineMarkers[0])):
+                self.imageIconContainer.currentWidget().addItem(
+                    self.flowlineMarkers[self.selectedMarkerPosition[0]][i].getCross()[0])
+                self.imageIconContainer.currentWidget().addItem(
+                    self.flowlineMarkers[self.selectedMarkerPosition[0]][i].getCross()[1])
 
+                xa = [self.flowlineMarkers[self.selectedMarkerPosition[0]][i - 1].cx,
+                      self.flowlineMarkers[self.selectedMarkerPosition[0]][i].cx]
+                ya = [self.flowlineMarkers[self.selectedMarkerPosition[0]][i - 1].cy,
+                      self.flowlineMarkers[self.selectedMarkerPosition[0]][i].cy]
+                self.flowlineMarkers[self.selectedMarkerPosition[0]][i].setLine(
+                    pg.PlotDataItem(xa, ya, connect='all', pen=skinnyBlackPlotPen), 0)
+                self.flowlineMarkers[self.selectedMarkerPosition[0]][i - 1].setLine(
+                    self.flowlineMarkers[self.selectedMarkerPosition[0]][i].lines[0], 1)
 
-
-            '''
-            TODO: Markers are now created. Need to display them. Try to utilize displayMarkers function
-            So need to add an index to start at in displayMarkers function
-            Code below this is old and probably useless but keeping for notekeeping
-            
-            '''
-
-
-
-            whichFlowlineMarkers = self.flowlineMarkers[self.selectedMarkerPosition[0]]
-
-            whichMarker = whichFlowlineMarkers[self.selectedMarkerPosition[1]]
-
-            for i in range(self.selectedMarkerPosition[1] + 1, len(whichFlowlineMarkers)):
-                self.imageIconContainer.currentWidget().removeItem(whichFlowline[i])
-
-            whichFlowline = self.flowIntegrator.integrate(dx, dy, whichFlowline, self.selectedMarkerPosition[1],
-                                                          self.imageIconContainer.currentWidget())
-
-            for i in range(self.selectedMarkerPosition[1] + 1, self.lengthOfFlowline):
-                self.imageIconContainer.currentWidget().addItem(whichFlowline[i].getCross()[0])
-                self.imageIconContainer.currentWidget().addItem(whichFlowline[i].getCross()[1])
-
-                xa = [whichFlowline[i - 1].cx, whichFlowline[i].cx]
-                ya = [whichFlowline[i - 1].cy, whichFlowline[i].cy]
-                whichFlowline[i].setLine(pg.PlotDataItem(xa, ya, connect='all', pen=skinnyBlackPlotPen), 0)
-                whichFlowline[i - 1].setLine(whichFlowline[i].lines[0], 1)
-
-                self.imageIconContainer.currentWidget().addItem(whichFlowline[i].lines[0])
+                self.imageIconContainer.currentWidget().addItem(
+                    self.flowlineMarkers[self.selectedMarkerPosition[0]][i].lines[0])
 
             self.displayMarkerVariables()
 
+            # Connect lines between marker selected and previous marker
             if self.whichMarkerSelected.lines[0] is not None:
                 self.whichMarkerSelected.lines[0].setData(
                     [self.whichMarkerSelected.lines[0].getData()[0][0], self.whichMarkerSelected.cx],
                     [self.whichMarkerSelected.lines[0].getData()[1][0], self.whichMarkerSelected.cy])
 
-            if self.whichMarkerSelected.lines[1] is not None:
-                self.whichMarkerSelected.lines[1].setData(
-                    [self.whichMarkerSelected.cx, self.whichMarkerSelected.lines[1].getData()[0][1]],
-                    [self.whichMarkerSelected.cy, self.whichMarkerSelected.lines[1].getData()[1][1]])
+
+
 
     '''
     Function: calcVelocityWidth
