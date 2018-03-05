@@ -88,9 +88,9 @@ class MainWindow(QMainWindow):
         self.leftSide = QtGui.QVBoxLayout()
         self.leftSideWidget.setLayout(self.leftSide)
 
-        self.imageIconContainer = QtGui.QStackedWidget()
+        self.imageItemContainer = QtGui.QStackedWidget()
 
-        self.leftSide.addWidget(self.imageIconContainer)
+        self.leftSide.addWidget(self.imageItemContainer)
 
         self.mainLayout.addWidget(self.leftSideWidget)
         self.mainLayout.addWidget(self.buttonBoxWidget)
@@ -107,12 +107,12 @@ class MainWindow(QMainWindow):
     Dependencies: None
     Creator: James Stauder
     Date created: 2/25/18
-    Last edited: 2/25/18
+    Last edited: 3/5/18
     '''
 
-    # TODO Make sure markers work with different maps
+    # TODO mouseMove does not work when changing maps
     def changeMap(self, index):
-        vr = self.imageIconContainer.currentWidget().getPlotItem().getViewBox().viewRange()
+        vr = self.imageItemContainer.currentWidget().getPlotItem().getViewBox().viewRange()
         indexToDatasetDict = {
             0: 'velocity',
             1: 'bed',
@@ -124,10 +124,35 @@ class MainWindow(QMainWindow):
             oldMap = self.currentMap
             self.currentMap = index
 
-        # Kind of strange way. Possibly able to do this differently
-        self.imageIconContainer.setCurrentWidget(self.datasetDict[indexToDatasetDict[index]].plotWidget)
-        self.datasetDict[indexToDatasetDict[index]].imageItem.hoverEvent = self.mouseMove
-        self.datasetDict[indexToDatasetDict[index]].imageItem.mouseClickEvent = self.mouseClick
+        self.imageItemContainer.setCurrentWidget(self.datasetDict[indexToDatasetDict[self.currentMap]].plotWidget)
+        self.datasetDict[indexToDatasetDict[self.currentMap]].imageItem.hoverEvent = self.mouseMove
+        self.datasetDict[indexToDatasetDict[self.currentMap]].imageItem.mouseClickEvent = self.mouseClick
+
+        self.datasetDict[indexToDatasetDict[self.currentMap]].plotWidget.getPlotItem().getViewBox().setRange(
+            xRange=vr[0],
+            yRange=vr[1],
+            padding=0.0)
+        for line in self.flowlineMarkers:
+            for marker in line:
+                marker.plotWidget = self.datasetDict[indexToDatasetDict[self.currentMap]]
+                self.datasetDict[indexToDatasetDict[oldMap]].plotWidget.removeItem(marker.cross[0])
+                self.datasetDict[indexToDatasetDict[oldMap]].plotWidget.removeItem(marker.cross[1])
+                self.datasetDict[indexToDatasetDict[self.currentMap]].plotWidget.addItem(marker.cross[0])
+                self.datasetDict[indexToDatasetDict[self.currentMap]].plotWidget.addItem(marker.cross[1])
+
+                if marker.lines[0]:
+                    self.datasetDict[indexToDatasetDict[self.currentMap]].plotWidget.addItem(marker.lines[0])
+
+    '''
+     Function: mouseClick
+     Argument list: None
+     Purpose: Either select a marker or create new flowline
+     Return types, values: None
+     Dependencies: None
+     Creator: James Stauder
+     Date created: 2/25/18
+     Last edited: 3/5/18
+     '''
 
     def mouseClick(self, e):
 
@@ -171,7 +196,7 @@ class MainWindow(QMainWindow):
                     dx = newFlowlineMarkers[i][0]
                     dy = newFlowlineMarkers[i][1]
                     cx, cy = colorCoord(dx, dy)
-                    newFlowlineMarkers[i] = Marker(cx, cy, dx, dy, self.imageIconContainer.currentWidget())
+                    newFlowlineMarkers[i] = Marker(cx, cy, dx, dy, self.imageItemContainer.currentWidget())
 
                 self.displayMarkers(newFlowlineMarkers)
 
@@ -187,8 +212,6 @@ class MainWindow(QMainWindow):
             self.whichMarkerSelected = None
             self.textOut.clear()
 
-
-
     '''
     Function: mouseMove
     Argument list: None
@@ -201,6 +224,7 @@ class MainWindow(QMainWindow):
     TODO: This can be a bit confusing to read. The code is kind of wordy. We could possibly redraw flowline with the 
     display Markers function but that would require some changes to the Markers function to take an index.
     '''
+
     def mouseMove(self, e):
         if self.isMarkerSelected:
 
@@ -224,7 +248,7 @@ class MainWindow(QMainWindow):
 
             # Remove every marker past the one we selected
             for i in range(self.selectedMarkerPosition[1] + 1, len(self.flowlineMarkers[0])):
-                self.imageIconContainer.currentWidget().removeItem(
+                self.imageItemContainer.currentWidget().removeItem(
                     self.flowlineMarkers[self.selectedMarkerPosition[0]][i])
 
                 # get the flowline position of the new marker
@@ -233,12 +257,12 @@ class MainWindow(QMainWindow):
 
                 # Create new marker with new data
                 self.flowlineMarkers[self.selectedMarkerPosition[0]][i] = Marker(cx, cy, newPosition[0], newPosition[1],
-                                                                                 self.imageIconContainer.currentWidget())
+                                                                                 self.imageItemContainer.currentWidget())
             # This section redraws the new markers
             for i in range(self.selectedMarkerPosition[1] + 1, len(self.flowlineMarkers[0])):
-                self.imageIconContainer.currentWidget().addItem(
+                self.imageItemContainer.currentWidget().addItem(
                     self.flowlineMarkers[self.selectedMarkerPosition[0]][i].getCross()[0])
-                self.imageIconContainer.currentWidget().addItem(
+                self.imageItemContainer.currentWidget().addItem(
                     self.flowlineMarkers[self.selectedMarkerPosition[0]][i].getCross()[1])
 
                 xa = [self.flowlineMarkers[self.selectedMarkerPosition[0]][i - 1].cx,
@@ -250,7 +274,7 @@ class MainWindow(QMainWindow):
                 self.flowlineMarkers[self.selectedMarkerPosition[0]][i - 1].setLine(
                     self.flowlineMarkers[self.selectedMarkerPosition[0]][i].lines[0], 1)
 
-                self.imageIconContainer.currentWidget().addItem(
+                self.imageItemContainer.currentWidget().addItem(
                     self.flowlineMarkers[self.selectedMarkerPosition[0]][i].lines[0])
 
             self.displayMarkerVariables()
@@ -260,9 +284,6 @@ class MainWindow(QMainWindow):
                 self.whichMarkerSelected.lines[0].setData(
                     [self.whichMarkerSelected.lines[0].getData()[0][0], self.whichMarkerSelected.cx],
                     [self.whichMarkerSelected.lines[0].getData()[1][0], self.whichMarkerSelected.cy])
-
-
-
 
     '''
     Function: calcVelocityWidth
@@ -299,7 +320,7 @@ class MainWindow(QMainWindow):
             dx = newFlowlineMarkers[i][0]
             dy = newFlowlineMarkers[i][1]
             cx, cy = colorCoord(dx, dy)
-            newFlowlineMarkers[i] = Marker(cx, cy, dx, dy, self.imageIconContainer.currentWidget())
+            newFlowlineMarkers[i] = Marker(cx, cy, dx, dy, self.imageItemContainer.currentWidget())
         self.displayMarkers(newFlowlineMarkers)
 
         self.flowlines.append(midFlowline)
@@ -312,7 +333,7 @@ class MainWindow(QMainWindow):
 
             self.flowlineMarkers[0][i].setLine(pg.PlotDataItem(xValues, yValues, connect='all', pen=skinnyBlackPlotPen),
                                                0)
-            self.imageIconContainer.currentWidget().addItem(self.flowlineMarkers[0][i].lines[0])
+            self.imageItemContainer.currentWidget().addItem(self.flowlineMarkers[0][i].lines[0])
 
     '''
     Function: displayMarkers
@@ -329,12 +350,12 @@ class MainWindow(QMainWindow):
 
         # Add first marker. This needs to be peeled because the for loop
         # connects the markers backwards
-        self.imageIconContainer.currentWidget().addItem(flowline[0].getCross()[0])
-        self.imageIconContainer.currentWidget().addItem(flowline[0].getCross()[1])
+        self.imageItemContainer.currentWidget().addItem(flowline[0].getCross()[0])
+        self.imageItemContainer.currentWidget().addItem(flowline[0].getCross()[1])
 
         for i in range(1, len(flowline)):
-            self.imageIconContainer.currentWidget().addItem(flowline[i].getCross()[0])
-            self.imageIconContainer.currentWidget().addItem(flowline[i].getCross()[1])
+            self.imageItemContainer.currentWidget().addItem(flowline[i].getCross()[0])
+            self.imageItemContainer.currentWidget().addItem(flowline[i].getCross()[1])
 
             xValuesOfMarkers = [flowline[i - 1].cx, flowline[i].cx]
             yValuesOfMarkers = [flowline[i - 1].cy, flowline[i].cy]
@@ -344,7 +365,7 @@ class MainWindow(QMainWindow):
                 pg.PlotDataItem(xValuesOfMarkers, yValuesOfMarkers, connect='all', pen=skinnyBlackPlotPen), 0)
             flowline[i - 1].setLine(flowline[i].lines[0], 1)
 
-            self.imageIconContainer.currentWidget().addItem(flowline[i].lines[0])
+            self.imageItemContainer.currentWidget().addItem(flowline[i].lines[0])
 
     '''
     Function: displayMarkerVariables
