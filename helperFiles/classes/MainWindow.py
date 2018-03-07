@@ -99,6 +99,19 @@ class MainWindow(QMainWindow):
 
         self.connectButtons()
 
+    def addToImageItemContainer(self, datasetDict):
+        self.imageItemContainer.addWidget(datasetDict['velocity'].plotWidget)
+        self.imageItemContainer.setCurrentWidget(datasetDict['velocity'].plotWidget)
+
+        self.imageItemContainer.addWidget(datasetDict['bed'].plotWidget)
+        self.imageItemContainer.addWidget(datasetDict['surface'].plotWidget)
+        self.imageItemContainer.addWidget(datasetDict['thickness'].plotWidget)
+        self.imageItemContainer.addWidget(datasetDict['t2m'].plotWidget)
+        self.imageItemContainer.addWidget(datasetDict['smb'].plotWidget)
+
+        for key in datasetDict:
+            datasetDict[key].pathPlotItem.clear()
+
     '''
     Function: changeMap
     Argument list: index

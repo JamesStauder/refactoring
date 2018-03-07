@@ -1,8 +1,8 @@
 from ..createColorMaps import *
 
-from pylab import sqrt, linspace
+from pylab import sqrt
 from scipy.interpolate import RectBivariateSpline
-
+from ..constants import *
 import numpy as np
 
 
@@ -24,10 +24,8 @@ class Dataset():
         self.name = name
         self.pen = pen
 
-        #TODO can these be changed to globals? Takes no time to do but it is done on repeat
         bed_xarray = linspace(map['proj_x0'], map['proj_x1'], map['x1'], endpoint=True)
         bed_yarray = linspace(map['proj_y1'], map['proj_y0'], map['y1'], endpoint=True)
-
 
         if self.name == 'velocity':
             self.data, self.vx, self.vy = self.setData(name)
@@ -38,7 +36,7 @@ class Dataset():
         else:
             self.data = self.setData(name)
 
-        self.interp   = RectBivariateSpline(bed_xarray, bed_yarray, np.flipud(self.data).transpose())
+        self.interp  = RectBivariateSpline(bed_xarray, bed_yarray, np.flipud(self.data).transpose())
 
         #Only create color map if we wish to render possible in the future where we wish to create Dataset for backend web
         if name != 'VX' and name != 'VY':

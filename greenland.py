@@ -53,7 +53,7 @@ def main(argv):
         mw.datasetDict = datasetDict
         mw.createIntegrator()
 
-        addToImageItemContainer(mw, datasetDict)
+        mw.addToImageItemContainer(datasetDict)
 
         sys.exit(app.exec_())
 
@@ -73,18 +73,7 @@ Last edited: 2/5/18
 '''
 
 
-def addToImageItemContainer(mw, datasetDict):
-    mw.imageItemContainer.addWidget(datasetDict['velocity'].plotWidget)
-    mw.imageItemContainer.setCurrentWidget(datasetDict['velocity'].plotWidget)
 
-    mw.imageItemContainer.addWidget(datasetDict['bed'].plotWidget)
-    mw.imageItemContainer.addWidget(datasetDict['surface'].plotWidget)
-    mw.imageItemContainer.addWidget(datasetDict['thickness'].plotWidget)
-    mw.imageItemContainer.addWidget(datasetDict['t2m'].plotWidget)
-    mw.imageItemContainer.addWidget(datasetDict['smb'].plotWidget)
-
-    for key in datasetDict:
-        datasetDict[key].pathPlotItem.clear()
 
 '''
 Function: printMainMenu:

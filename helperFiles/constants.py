@@ -1,5 +1,7 @@
 import pyqtgraph as pg
 from dolfin import Constant
+from pylab import linspace
+
 
 map = {'x0': 0, 'y0': 0,  'x1': 10018, 'y1': 17946,
        'cmap_x0': 0, 'cmap_y0': 0,
