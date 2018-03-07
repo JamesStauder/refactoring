@@ -16,7 +16,6 @@ def createColorMap(data):
     data.plotWidget.setAspectLocked(True)
     data.plotWidget.invertY(True)
 
-    data.colorMap = getCM(data.name)
 
     '''
     Commented out because it is broken. line that breaks it ->    data.colorBarAnchorWidget.setParentItem(data.plotWidget.getPlotItem())
@@ -46,6 +45,10 @@ def createColorMap(data):
     colorMapFile.close()
 
 
+
+
+'''
+This is used to generate a colorMap for our data. Currently not needed
 def getCM(dataName):
     if dataName == 'velocity':
         minimum, maximum = 0.0, 12950.7
@@ -159,7 +162,7 @@ def getCM(dataName):
             260.0
         ]
         return pg.ColorMap(tempArr, colorArr, mode='byte')
-
+'''
 
 '''
 def getColorBar(dataName, cm):

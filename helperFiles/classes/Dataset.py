@@ -41,7 +41,7 @@ class Dataset():
         #Only create color map if we wish to render possible in the future where we wish to create Dataset for backend web
         if name != 'VX' and name != 'VY':
             createColorMap(self)
-            self.pathPlotItem = pg.PlotDataItem([0,0], pen=self.pen)
+            self.pathPlotItem = pg.PlotDataItem([0, 0], pen=self.pen)
 
 
     def setData(self, name):
