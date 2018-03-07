@@ -18,7 +18,7 @@ Last edited: 3/2/18
 '''
 
 
-class Dataset():
+class Dataset:
     def __init__(self, name, pen):
         self.name = name
         self.pen = pen
