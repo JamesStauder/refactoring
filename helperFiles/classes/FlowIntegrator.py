@@ -1,7 +1,6 @@
 from scipy.integrate import ode
 
 from Dataset import *
-from Marker import *
 
 '''
 Class: FlowIntegrator
@@ -13,6 +12,7 @@ Creator: Jake Downs
 Date created: Unknown
 Last edited: 3/2/18
 '''
+
 
 class FlowIntegrator():
 
@@ -34,10 +34,7 @@ class FlowIntegrator():
 
         # ODE integrator
         self.integrator = ode(rhs).set_integrator('vode', method = 'adams')
-    
-        
 
-    
     # Set the currently displayed data field
     def integrate(self, x0, y0, flowline, indexMarker):
         u0 = np.array([x0, y0, 0.])
@@ -55,7 +52,6 @@ class FlowIntegrator():
 
         v_mag = np.sqrt(vx**2 + vy**2)
 
-
         # x and y positions along flow line
         xs = [x0]
         ys = [y0]
@@ -63,8 +59,6 @@ class FlowIntegrator():
         ds = [0.0]
         # times
         ts = [0.]
-
-
 
         count = indexMarker
         
@@ -79,21 +73,15 @@ class FlowIntegrator():
             y = u[1]
             d = u[2]
 
-            flowline[count] = [x,y]
-
-
-
+            flowline[count] = [x, y]
 
             xs.append(x)
             ys.append(y)
             ds.append(d)
             ts.append(self.integrator.t)
-            vx = self.vxDataSet.getInterpolatedValue(x,y)
-            vy = self.vyDataSet.getInterpolatedValue(x,y)
+            vx = self.vxDataSet.getInterpolatedValue(x, y)
+            vy = self.vyDataSet.getInterpolatedValue(x, y)
             v_mag = np.sqrt(vx**2 + vy**2)
-
-
-
 
         return flowline
 

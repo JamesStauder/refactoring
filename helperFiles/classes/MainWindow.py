@@ -99,6 +99,16 @@ class MainWindow(QMainWindow):
 
         self.connectButtons()
 
+    '''
+    Function: addToImageItemContainer
+    Argument list: datasetDict
+    Purpose: add the different dataset widgets to the imageItemContainer
+    Return types, values: None
+    Dependencies: None
+    Creator: James Stauder
+    Date created: 2/25/18
+    Last edited: 3/5/18
+    '''
     def addToImageItemContainer(self, datasetDict):
         self.imageItemContainer.addWidget(datasetDict['velocity'].plotWidget)
         self.imageItemContainer.setCurrentWidget(datasetDict['velocity'].plotWidget)

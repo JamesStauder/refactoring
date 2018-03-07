@@ -11,15 +11,14 @@ Purpose: TODO AFTER CLEANUP
 
 '''
 Notes:
-Reformatting Patricks tool.
+Reformatting Patrick's tool.
 Current progress:
 greenland: line 0
 dataset_objects.py: DONE -> blackBox and greenland
 dataset class: DONE -> Dataset
 gui.py: DONE -> mainWindow
-
-
 '''
+
 
 '''
 Main function
@@ -56,24 +55,6 @@ def main(argv):
         mw.addToImageItemContainer(datasetDict)
 
         sys.exit(app.exec_())
-
-
-'''
-Function: addToImageIconContainer
-Argument list: 
-mw -> Main window of the gui
-datasetDict-> Dictionary holding all of our datasets
-Purpose: add all of the different datasets to the imageIconContainer of the main window
-Return types, values: None
-Dependencies: None
-Creator: James Stauder
-Date created: 2/5/18
-Last edited: 2/5/18
-# TODO Can move this to init of MW
-'''
-
-
-
 
 '''
 Function: printMainMenu:

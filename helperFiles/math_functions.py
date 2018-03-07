@@ -56,7 +56,7 @@ def dataCoord(x, y):
 
     if map['cmap_y0'] <= y <= map['cmap_y1']:
         if map['cmap_x0'] <= x <= map['cmap_x1']:
-           return colorToData(x, y)
+            return colorToData(x, y)
     elif map['cmap_proj_y0'] <= y <= map['cmap_proj_y1']:
         if map['cmap_proj_x0'] <= x <= map['cmap_proj_x1']:
             return colorToData(colorCoord(x, y))

@@ -1,6 +1,5 @@
 import h5py
 from constants import *
-import numpy as np
 import pyqtgraph as pg
 
 
@@ -15,7 +14,6 @@ def createColorMap(data):
     data.plotWidget.addItem(data.imageItem)
     data.plotWidget.setAspectLocked(True)
     data.plotWidget.invertY(True)
-
 
     '''
     Commented out because it is broken. line that breaks it ->    data.colorBarAnchorWidget.setParentItem(data.plotWidget.getPlotItem())
@@ -43,9 +41,6 @@ def createColorMap(data):
    
     '''
     colorMapFile.close()
-
-
-
 
 '''
 This is used to generate a colorMap for our data. Currently not needed
