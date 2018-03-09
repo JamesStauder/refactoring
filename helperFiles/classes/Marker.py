@@ -109,7 +109,7 @@ class Marker:
         self.lines[i] = line
 
     def getLine(self):
-        return self.lines 
+        return self.lines
 
     def getCross(self):
         return self.cross[0], self.cross[1]

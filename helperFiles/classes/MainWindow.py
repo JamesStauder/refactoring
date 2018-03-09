@@ -1,8 +1,11 @@
 from PyQt4.QtGui import *
+
 from Instructions import *
 from FlowIntegrator import *
 from Dataset import *
 from Marker import *
+from ModelGUI import *
+import math
 
 
 class MainWindow(QMainWindow):
@@ -29,7 +32,8 @@ class MainWindow(QMainWindow):
         self.whichIndexOfFlowlineSelected = None
 
         # Flowline information
-        self.lengthOfFlowline = 300
+        self.flowlineDistance = 300000
+        self.lengthOfFlowline = 1
         self.flowlines = []
         self.flowlineMarkers = []
         self.integratorPerMarker = 10
@@ -49,11 +53,14 @@ class MainWindow(QMainWindow):
         self.mapList.setMaximumWidth(self.maxWidth)
         self.buttonBox.addWidget(self.mapList)
 
-        self.autoCorrectVpt = QtGui.QCheckBox('Auto-correct Marker pos.')
-        self.autoCorrectVpt.setTristate(False)
-        self.autoCorrectVpt.setCheckState(0)
-        self.autoCorrectVpt.setMaximumWidth(self.maxWidth)
-        self.buttonBox.addWidget(self.autoCorrectVpt)
+        self.spatialResolutionWidget = QtGui.QWidget()
+        self.spatialResolutionLayout = QtGui.QHBoxLayout()
+        self.spatialResolutionWidget.setLayout(self.spatialResolutionLayout)
+        self.spatialResolutionLabel = QtGui.QLabel('Spatial Resolution(m)')
+        self.spatialResolutionLineEdit = QtGui.QLineEdit('1000')
+        self.spatialResolutionLayout.addWidget(self.spatialResolutionLabel)
+        self.spatialResolutionLayout.addWidget(self.spatialResolutionLineEdit)
+        self.buttonBox.addWidget(self.spatialResolutionWidget)
 
         self.instructionButton = QtGui.QPushButton('Instructions')
         self.instructionButton.setEnabled(True)
@@ -109,6 +116,7 @@ class MainWindow(QMainWindow):
     Date created: 2/25/18
     Last edited: 3/5/18
     '''
+
     def addToImageItemContainer(self, datasetDict):
         self.imageItemContainer.addWidget(datasetDict['velocity'].plotWidget)
         self.imageItemContainer.setCurrentWidget(datasetDict['velocity'].plotWidget)
@@ -200,6 +208,9 @@ class MainWindow(QMainWindow):
             # If no marker selected previously or currently create new flowline. Also cannot create more
             # then 2 flowlines.
             if (len(self.flowlines) < 2) and self.isMarkerSelected is False:
+                self.spatialResolutionLineEdit.setReadOnly(True)
+                self.lengthOfFlowline = int(self.flowlineDistance / float(self.spatialResolutionLineEdit.text()))
+                self.integratorPerMarker = int(math.ceil(10000 / (float(self.spatialResolutionLineEdit.text()))))
                 xClickPosition = e.pos().x()
                 yClickPosition = e.pos().y()
                 dx, dy = colorToProj(xClickPosition, yClickPosition)
@@ -210,7 +221,8 @@ class MainWindow(QMainWindow):
                     newFlowline.append(None)
                 newFlowline[0] = [dx, dy]
 
-                newFlowline = self.flowIntegrator.integrate(dx, dy, newFlowline, 0)
+                newFlowline = self.flowIntegrator.integrate(dx, dy, newFlowline, 0,
+                                                            float(self.spatialResolutionLineEdit.text()))
 
                 # Create a flowline of markers spaced out based on the IntegratorPerMarker
                 newFlowlineMarkers = newFlowline[::self.integratorPerMarker]
@@ -225,6 +237,7 @@ class MainWindow(QMainWindow):
 
                 self.flowlines.append(newFlowline)
                 self.flowlineMarkers.append(newFlowlineMarkers)
+                print len(newFlowline)
 
                 if len(self.flowlines) == 2:
                     self.velocityWidthButton.setEnabled(True)
@@ -243,7 +256,7 @@ class MainWindow(QMainWindow):
     Dependencies: None
     Creator: James Stauder
     Date created: 2/25/18
-    Last edited: 3/2/18
+    Last edited: 3/9/18
     TODO: This can be a bit confusing to read. The code is kind of wordy. We could possibly redraw flowline with the 
     display Markers function but that would require some changes to the Markers function to take an index.
     '''
@@ -264,10 +277,10 @@ class MainWindow(QMainWindow):
             self.flowlines[whichFlowlineSelected][indexSelected] = [self.whichMarkerSelected.dx,
                                                                     self.whichMarkerSelected.dy]
 
-            self.flowlines[whichFlowlineSelected] = self.flowIntegrator.integrate(self.whichMarkerSelected.dx,
-                                                                                  self.whichMarkerSelected.dy,
-                                                                                  self.flowlines[whichFlowlineSelected],
-                                                                                  indexSelected)
+            self.flowlines[whichFlowlineSelected] = self.flowIntegrator.integrate(
+                self.whichMarkerSelected.dx, self.whichMarkerSelected.dy,
+                self.flowlines[whichFlowlineSelected], indexSelected,
+                float(self.spatialResolutionLineEdit.text()))
 
             # Remove every marker past the one we selected
             for i in range(self.selectedMarkerPosition[1] + 1, len(self.flowlineMarkers[0])):
@@ -279,8 +292,9 @@ class MainWindow(QMainWindow):
                 cx, cy = colorCoord(newPosition[0], newPosition[1])
 
                 # Create new marker with new data
-                self.flowlineMarkers[self.selectedMarkerPosition[0]][i] = Marker(cx, cy, newPosition[0], newPosition[1],
-                                                                                 self.imageItemContainer.currentWidget())
+                self.flowlineMarkers[self.selectedMarkerPosition[0]][i] = Marker(
+                    cx, cy, newPosition[0], newPosition[1],
+                    self.imageItemContainer.currentWidget())
             # This section redraws the new markers
             for i in range(self.selectedMarkerPosition[1] + 1, len(self.flowlineMarkers[0])):
                 self.imageItemContainer.currentWidget().addItem(
@@ -318,7 +332,7 @@ class MainWindow(QMainWindow):
     Dependencies: Two selected shear margins. This is susceptible to user errors
     Creator: James Stauder
     Date created: 2/25/18
-    Last edited: 3/2/18
+    Last edited: 3/9/18
     '''
 
     def calcVelocityWidth(self):
@@ -335,7 +349,9 @@ class MainWindow(QMainWindow):
         for i in range(self.lengthOfFlowline):
             midFlowline.append(None)
         midFlowline[0] = [xProj, yProj]
-        midFlowline = self.flowIntegrator.integrate(xProj, yProj, midFlowline, 0)
+        midFlowline = self.flowIntegrator.integrate(
+            xProj, yProj, midFlowline, 0,
+            float(self.spatialResolutionLineEdit.text()))
 
         # create new Markers that will be displayed on the GUI.
         newFlowlineMarkers = midFlowline[::self.integratorPerMarker]
@@ -357,6 +373,7 @@ class MainWindow(QMainWindow):
             self.flowlineMarkers[0][i].setLine(pg.PlotDataItem(xValues, yValues, connect='all', pen=skinnyBlackPlotPen),
                                                0)
             self.imageItemContainer.currentWidget().addItem(self.flowlineMarkers[0][i].lines[0])
+        self.runModelButton.setEnabled(True)
 
     '''
     Function: displayMarkers
@@ -427,6 +444,9 @@ class MainWindow(QMainWindow):
         vy = Dataset('VY', tealPlotPen)
         self.flowIntegrator = FlowIntegrator(vx, vy)
 
+    def runModel(self):
+        m = ModelGUI(self)
+
     '''
     Function: connectButtons
     Argument list: None
@@ -442,6 +462,7 @@ class MainWindow(QMainWindow):
         self.mapList.currentIndexChanged.connect(self.changeMap)
         self.instructionButton.clicked.connect(self.showInstructions)
         self.velocityWidthButton.clicked.connect(self.calcVelocityWidth)
+        self.runModelButton.clicked.connect(self.runModel)
 
     def showInstructions(self):
         Instructions(self)

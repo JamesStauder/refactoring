@@ -1,6 +1,7 @@
 import time
 import sys
 from helperFiles.classes.MainWindow import *
+from helperFiles.classes.BlackBox import *
 
 '''
 Creator: James Stauder

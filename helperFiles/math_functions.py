@@ -1,5 +1,6 @@
 from constants import *
-
+import numpy as np
+from scipy import sqrt, linspace
 '''
 colorToProj:  color -> projected
 dataToProj:   data -> projected
@@ -64,8 +65,13 @@ def dataCoord(x, y):
         print 'ERROR: dataCoord(x, y) error'
         return -1
 
-
-
+def interpolateData(dr, flowline):
+    velValues = []
+    xValues = []
+    smbValues = []
+    surfValues = []
+    bedValues = []
+    thickValues = []
 
 
 

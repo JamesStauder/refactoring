@@ -36,13 +36,13 @@ class FlowIntegrator():
         self.integrator = ode(rhs).set_integrator('vode', method = 'adams')
 
     # Set the currently displayed data field
-    def integrate(self, x0, y0, flowline, indexMarker):
+    def integrate(self, x0, y0, flowline, indexMarker, resolution):
         u0 = np.array([x0, y0, 0.])
         self.integrator.set_initial_value(u0, 0.0)
 
         # Approximate spacing in m between points (depends on actual flow path)
-        spacing = 1000
-        dist_mult = 2.0
+        spacing = resolution
+        dist_mult = 1.0
         # time step
         dt = spacing / dist_mult
 
