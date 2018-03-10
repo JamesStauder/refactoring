@@ -64,14 +64,3 @@ def dataCoord(x, y):
     else:
         print 'ERROR: dataCoord(x, y) error'
         return -1
-
-def interpolateData(dr, flowline):
-    velValues = []
-    xValues = []
-    smbValues = []
-    surfValues = []
-    bedValues = []
-    thickValues = []
-
-
-

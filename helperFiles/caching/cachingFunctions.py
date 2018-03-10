@@ -1,6 +1,10 @@
 import fenics as fc
 from scipy.interpolate import interp1d
 import numpy as np
+from scipy import sqrt, linspace
+
+from ..constants import thklim
+
 
 '''
 Function: dataToHDF5
@@ -38,11 +42,9 @@ def dataToHDF5(fileName, distanceData, thicknessPathData, bedPathData, surfacePa
     smbModelData = smb1dInterp(x)
     velocityModelData = velocity1dInterp(x)
 
-    THICKLIMIT = 10  # Minimum thickness of the ice
-
     H = surfaceModelData - bedModelData
 
-    surfaceModelData[H <= THICKLIMIT] = bedModelData[H <= THICKLIMIT]
+    surfaceModelData[H <= thklim] = bedModelData[H <= thklim]
 
     hdfName = fileName
     hfile = fc.HDF5File(mesh.mpi_comm(), hdfName, "w")
@@ -67,3 +69,23 @@ def dataToHDF5(fileName, distanceData, thicknessPathData, bedPathData, surfacePa
     hfile.write(functVelocity.vector(), "/velocity")
     hfile.write(mesh, "/mesh")
     hfile.close()
+
+
+def interpolateFlowlineData(datasetDictionary, flowline, flowlineDistance):
+    distanceBetweenPoints = sqrt((flowline[1][0] - flowline[0][0])**2 + (flowline[1][1] - flowline[0][1])**2)
+    distanceData = linspace(0, flowlineDistance, flowlineDistance / distanceBetweenPoints)
+
+    for x in datasetDictionary:
+        pathData = []
+        for i in flowline:
+            pathData.append(datasetDictionary[x].getInterpolatedValue(i[0], i[1])[0][0])
+        datasetDictionary[x].pathData = pathData
+
+    dataToHDF5('.data/latestProfile.h5',
+               distanceData,
+               datasetDictionary['thickness'].pathData,
+               datasetDictionary['bed'].pathData,
+               datasetDictionary['surface'].pathData,
+               datasetDictionary['smb'].pathData,
+               datasetDictionary['velocity'].pathData,
+               )

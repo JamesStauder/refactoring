@@ -1,6 +1,7 @@
 from pyqtgraph.Qt import QtGui
 from PyQt4 import QtCore
-import pyqtgraph as pg
+
+from BlackBox import *
 
 
 class ModelGUI(QtGui.QMainWindow):
@@ -21,8 +22,12 @@ class ModelGUI(QtGui.QMainWindow):
 
         self.horizontalLayout.addWidget(self.leftPanelWidget)
         self.horizontalLayout.addWidget(self.rightPanelWidget)
+
+        self.runButton.clicked.connect(self.runModelEvent)
         self.showMaximized()
         self.show()
+
+
 
     def createRightPanel(self):
         self.rightPanelWidget = QtGui.QWidget()
@@ -41,6 +46,7 @@ class ModelGUI(QtGui.QMainWindow):
 
         # Buttons
         self.runButton = QtGui.QPushButton('Run Model')
+
         self.pauseButton = QtGui.QPushButton('Pause Model')
         self.pauseButton.setEnabled(False)
 
@@ -51,6 +57,8 @@ class ModelGUI(QtGui.QMainWindow):
         self.rightPanelLayout.addWidget(self.timeCurrent, 3, 0, 1, 2)
         self.rightPanelLayout.addWidget(self.runButton, 4, 0, 1, 2)
         self.rightPanelLayout.addWidget(self.pauseButton, 5, 0, 1, 2)
+
+
 
     def createLeftPanel(self):
         self.leftPanelWidget = QtGui.QWidget()
@@ -74,8 +82,10 @@ class ModelGUI(QtGui.QMainWindow):
         self.runButton.setEnabled(False)
         self.pauseButton.setEnabled(True)
 
-        self.dr = float(self.spatialResLineEdit.text())
+        runModel = IceCube('.data/latestProfile.h5', float(self.timeEndLineEdit.text()),
+                           float(self.timeStepLineEdit.text()))
 
+        #TODO while runModel.t < runModel.timeEnd:
 
 
 

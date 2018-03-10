@@ -1,11 +1,12 @@
 from PyQt4.QtGui import *
+import math
 
 from Instructions import *
 from FlowIntegrator import *
 from Dataset import *
 from Marker import *
 from ModelGUI import *
-import math
+from ..caching.cachingFunctions import *
 
 
 class MainWindow(QMainWindow):
@@ -237,7 +238,6 @@ class MainWindow(QMainWindow):
 
                 self.flowlines.append(newFlowline)
                 self.flowlineMarkers.append(newFlowlineMarkers)
-                print len(newFlowline)
 
                 if len(self.flowlines) == 2:
                     self.velocityWidthButton.setEnabled(True)
@@ -374,6 +374,8 @@ class MainWindow(QMainWindow):
                                                0)
             self.imageItemContainer.currentWidget().addItem(self.flowlineMarkers[0][i].lines[0])
         self.runModelButton.setEnabled(True)
+
+        interpolateFlowlineData(self.datasetDict, midFlowline, self.flowlineDistance)
 
     '''
     Function: displayMarkers
