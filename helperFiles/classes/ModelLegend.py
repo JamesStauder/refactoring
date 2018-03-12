@@ -40,4 +40,17 @@ class ModelLegend(LegendItem):
         self.items.append((sample, label))
         self.layout.addItem(sample, row, 0)
         self.layout.addItem(label, row, 1)
-        self.updateSize()
+
+        if self.size is not None:
+            return
+
+        height = 0
+        width = 0
+        # print("-------")
+        for sample, label in self.items:
+            height += max(sample.height(), label.height()) + 3
+            width = max(width, sample.width() + label.width())
+            print(width, height)
+        print width, height
+        self.setGeometry(0, 0, width + 25, height)
+

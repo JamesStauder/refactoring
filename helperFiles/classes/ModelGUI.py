@@ -2,6 +2,7 @@ from pyqtgraph.Qt import QtGui
 from PyQt4 import QtCore
 
 from BlackBox import *
+from ModelPlotter import *
 
 
 class ModelGUI(QtGui.QMainWindow):
@@ -24,6 +25,9 @@ class ModelGUI(QtGui.QMainWindow):
         self.horizontalLayout.addWidget(self.rightPanelWidget)
 
         self.runButton.clicked.connect(self.runModelEvent)
+        self.runModel = IceCube('.data/latest_profile2.h5', float(self.timeEndLineEdit.text()),
+                           float(self.timeStepLineEdit.text()))
+        self.plots = ModelPlotter(self.runModel.strs, self.runModel.mesh, self.plot1, self.plot2, self.plot3)
         self.showMaximized()
         self.show()
 
@@ -82,10 +86,15 @@ class ModelGUI(QtGui.QMainWindow):
         self.runButton.setEnabled(False)
         self.pauseButton.setEnabled(True)
 
-        runModel = IceCube('.data/latestProfile.h5', float(self.timeEndLineEdit.text()),
-                           float(self.timeStepLineEdit.text()))
+        while self.runModel.t < self.runModel.timeEnd:
 
-        #TODO while runModel.t < runModel.timeEnd:
+
+            self.plots.refreshPlot(self.runModel)
+            pg.QtGui.QApplication.processEvents()
+
+
+
+
 
 
 

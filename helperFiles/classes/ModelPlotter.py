@@ -4,7 +4,8 @@ from ModelLegend import *
 
 
 class ModelPlotter(object):
-    def __init__(self, strs, mesh, plot1, plot2, plot3, t0, dt):
+    def __init__(self, strs, mesh, plot1, plot2, plot3):
+
         self.run = True
         self.strs = strs
         self.mesh = mesh
@@ -18,13 +19,13 @@ class ModelPlotter(object):
 
         self.plot1 = plot1
         self.plot1.showGrid(x=True, y=True)
-
         self.ph0 = self.plot1.plot(self.x, self.strs.B.compute_vertex_values(), pen=bluePlotPen)
         self.ph100 = self.plot1.plot(self.x, S.compute_vertex_values(), pen=redPlotPen)
         self.ph1 = self.plot1.plot(self.x, S.compute_vertex_values(), pen=whitePlotPen)
 
         self.legend1 = ModelLegend(offset=(-50, 50))
-        self.legend1.setParentLayoutItem(self.plot1.graphicsItem())
+        self.legend1.setParentItem(self.plot1.graphicsItem())
+
         self.legend1.addItem(self.ph0, '<i>B</i>')
         self.legend1.addItem(self.ph100, '<i>S</i><sub>o</sub>')
         self.legend1.addItem(self.ph1, '<i>S</i>')
@@ -49,12 +50,29 @@ class ModelPlotter(object):
         self.plot3 = plot3
         self.plot3.showGrid(x=True, y=True)
         self.legend3 = ModelLegend(offset=(-50, 50))
-        self.legend3.setParentItem(self.plt3.graphicsItem())
+        self.legend3.setParentItem(self.plot3.graphicsItem())
 
         us = project(self.strs.u(0))
         ub = project(self.strs.u(1))
 
-        self.ph7 = self.plt3.plot(self.x, us.compute_vertex_values(), pen=bluePlotPen)
-        self.ph8 = self.plt3.plot(self.x, ub.compute_vertex_values(), pen=greenPlotPen)
+        self.ph7 = self.plot3.plot(self.x, us.compute_vertex_values(), pen=bluePlotPen)
+        self.ph8 = self.plot3.plot(self.x, ub.compute_vertex_values(), pen=greenPlotPen)
         self.legend3.addItem(self.ph7, '&mu;<sub>s</sub>')
         self.legend3.addItem(self.ph8, '&mu;<sub>b</sub>')
+
+
+
+    def refreshPlot(self, box):
+        BB, HH, TD, TB, TX, TY, TZ, us, ub = box.runNextStep()
+
+        self.ph0.setData(self.x, BB)
+        self.ph1.setData(self.x, (BB + HH))  # Surface
+
+        self.ph2.setData(self.x, TD)
+        self.ph3.setData(self.x, TB)
+        self.ph4.setData(self.x, TX)
+        self.ph5.setData(self.x, TY)
+        self.ph6.setData(self.x, TZ)
+
+        self.ph7.setData(self.x, us)
+        self.ph8.setData(self.x, ub)
