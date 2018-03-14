@@ -33,7 +33,7 @@ class MainWindow(QMainWindow):
         self.whichIndexOfFlowlineSelected = None
 
         # Flowline information
-        self.flowlineDistance = 300000
+        self.flowlineDistance = 100000
         self.lengthOfFlowline = 1
         self.flowlines = []
         self.flowlineMarkers = []
@@ -62,6 +62,16 @@ class MainWindow(QMainWindow):
         self.spatialResolutionLayout.addWidget(self.spatialResolutionLabel)
         self.spatialResolutionLayout.addWidget(self.spatialResolutionLineEdit)
         self.buttonBox.addWidget(self.spatialResolutionWidget)
+
+        self.distanceWidget = QtGui.QWidget()
+        self.distanceLayout = QtGui.QHBoxLayout()
+        self.distanceWidget.setLayout(self.distanceLayout)
+        self.distanceLabel = QtGui.QLabel('distance(km)')
+        self.distanceLineEdit = QtGui.QLineEdit('100')
+        self.spatialResolutionLayout.addWidget(self.distanceLabel)
+        self.spatialResolutionLayout.addWidget(self.distanceLineEdit)
+        self.buttonBox.addWidget(self.distanceWidget)
+
 
         self.instructionButton = QtGui.QPushButton('Instructions')
         self.instructionButton.setEnabled(True)
@@ -210,6 +220,8 @@ class MainWindow(QMainWindow):
             # then 2 flowlines.
             if (len(self.flowlines) < 2) and self.isMarkerSelected is False:
                 self.spatialResolutionLineEdit.setReadOnly(True)
+                self.distanceLineEdit.setReadOnly(True)
+                self.flowlineDistance = int(self.distanceLineEdit.text()) * 1000
                 self.lengthOfFlowline = int(self.flowlineDistance / float(self.spatialResolutionLineEdit.text()))
                 self.integratorPerMarker = int(math.ceil(10000 / (float(self.spatialResolutionLineEdit.text()))))
                 xClickPosition = e.pos().x()
