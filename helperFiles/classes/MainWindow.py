@@ -72,6 +72,14 @@ class MainWindow(QMainWindow):
         self.spatialResolutionLayout.addWidget(self.distanceLineEdit)
         self.buttonBox.addWidget(self.distanceWidget)
 
+        self.profileWidget = QtGui.QWidget()
+        self.profileLayout = QtGui.QHBoxLayout()
+        self.profileWidget.setLayout(self.profileLayout)
+        self.profileLabel = QtGui.QLabel('output file name')
+        self.profileLineEdit = QtGui.QLineEdit('myProfile.h5')
+        self.profileLayout.addWidget(self.profileLabel)
+        self.profileLayout.addWidget(self.profileLineEdit)
+        self.buttonBox.addWidget(self.profileWidget)
 
         self.instructionButton = QtGui.QPushButton('Instructions')
         self.instructionButton.setEnabled(True)
@@ -93,7 +101,7 @@ class MainWindow(QMainWindow):
         self.generateMeshButton.setMaximumWidth(self.maxWidth)
         self.buttonBox.addWidget(self.generateMeshButton)
 
-        self.velocityWidthButton = QtGui.QPushButton('Velocity Width')
+        self.velocityWidthButton = QtGui.QPushButton('Create Profile')
         self.velocityWidthButton.setEnabled(False)
         self.velocityWidthButton.setMaximumWidth(self.maxWidth)
         self.buttonBox.addWidget(self.velocityWidthButton)
@@ -387,7 +395,8 @@ class MainWindow(QMainWindow):
             self.imageItemContainer.currentWidget().addItem(self.flowlineMarkers[0][i].lines[0])
         self.runModelButton.setEnabled(True)
 
-        interpolateFlowlineData(self.datasetDict, midFlowline, self.flowlineDistance)
+        interpolateFlowlineData(self.datasetDict, midFlowline, self.flowlineDistance,
+                                float(self.spatialResolutionLineEdit.text()), self.profileLineEdit.text())
 
     '''
     Function: displayMarkers

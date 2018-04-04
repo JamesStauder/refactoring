@@ -1,6 +1,4 @@
 from constants import *
-import numpy as np
-from scipy import sqrt, linspace
 '''
 colorToProj:  color -> projected
 dataToProj:   data -> projected

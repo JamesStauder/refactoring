@@ -46,11 +46,9 @@ class ModelLegend(LegendItem):
 
         height = 0
         width = 0
-        # print("-------")
         for sample, label in self.items:
             height += max(sample.height(), label.height()) + 3
             width = max(width, sample.width() + label.width())
-            print(width, height)
-        print width, height
+
         self.setGeometry(0, 0, width + 25, height)
 

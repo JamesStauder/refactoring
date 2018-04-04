@@ -60,8 +60,6 @@ class ModelPlotter(object):
         self.legend3.addItem(self.ph7, '&mu;<sub>s</sub>')
         self.legend3.addItem(self.ph8, '&mu;<sub>b</sub>')
 
-
-
     def refreshPlot(self, box):
         BB, HH, TD, TB, TX, TY, TZ, us, ub = box.runNextStep()
 

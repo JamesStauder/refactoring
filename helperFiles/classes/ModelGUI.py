@@ -25,13 +25,13 @@ class ModelGUI(QtGui.QMainWindow):
         self.horizontalLayout.addWidget(self.rightPanelWidget)
 
         self.runButton.clicked.connect(self.runModelEvent)
-        self.runModel = IceCube('.data/latest_profile2.h5', float(self.timeEndLineEdit.text()),
-                           float(self.timeStepLineEdit.text()))
+        self.pauseButton.clicked.connect(self.pauseModel)
+        self.runModel = IceCube('.data/latestProfile.h5', float(self.timeEndLineEdit.text()),
+                                float(self.timeStepLineEdit.text()))
         self.plots = ModelPlotter(self.runModel.strs, self.runModel.mesh, self.plot1, self.plot2, self.plot3)
         self.showMaximized()
+        self.run = True
         self.show()
-
-
 
     def createRightPanel(self):
         self.rightPanelWidget = QtGui.QWidget()
@@ -62,8 +62,6 @@ class ModelGUI(QtGui.QMainWindow):
         self.rightPanelLayout.addWidget(self.runButton, 4, 0, 1, 2)
         self.rightPanelLayout.addWidget(self.pauseButton, 5, 0, 1, 2)
 
-
-
     def createLeftPanel(self):
         self.leftPanelWidget = QtGui.QWidget()
         self.leftPanelLayout = QtGui.QVBoxLayout()
@@ -86,15 +84,18 @@ class ModelGUI(QtGui.QMainWindow):
         self.runButton.setEnabled(False)
         self.pauseButton.setEnabled(True)
 
-        while self.runModel.t < self.runModel.timeEnd:
-
-
+        self.run = True
+        while self.runModel.t < self.runModel.timeEnd and self.run is True:
             self.plots.refreshPlot(self.runModel)
             pg.QtGui.QApplication.processEvents()
 
-
-
-
-
-
-
+    def pauseModel(self):
+        if self.run:
+            self.run = False
+            self.pauseButton.setText('Resume')
+        else:
+            self.run = True
+            self.pauseButton.setText('Pause')
+            while self.runModel.t < self.runModel.timeEnd and self.run is True:
+                self.plots.refreshPlot(self.runModel)
+                pg.QtGui.QApplication.processEvents()
