@@ -18,7 +18,7 @@ Last edited: 2/23/18
 
 
 def dataToHDF5(fileName, distanceData, thicknessPathData, bedPathData, surfacePathData, smbPathData, velocityPathData,
-               t2mPathData, resolution=1000):
+               t2mPathData, widthData, resolution=1000):
     # Create interps for each of our variables
     thickness1dInterp = interp1d(distanceData, thicknessPathData)
     bed1dInterp = interp1d(distanceData, bedPathData)
@@ -26,6 +26,7 @@ def dataToHDF5(fileName, distanceData, thicknessPathData, bedPathData, surfacePa
     smb1dInterp = interp1d(distanceData, smbPathData)
     velocity1dInterp = interp1d(distanceData, velocityPathData)
     t2m1dInterp = interp1d(distanceData, t2mPathData)
+    width1dInterp = interp1d(distanceData, widthData)
 
     numberOfPoints = int(np.floor(distanceData[-1] / float(resolution)))
 
@@ -39,6 +40,7 @@ def dataToHDF5(fileName, distanceData, thicknessPathData, bedPathData, surfacePa
     smbModelData = smb1dInterp(x)
     velocityModelData = velocity1dInterp(x)
     t2mModelData = t2m1dInterp(x)
+    widthModelData = width1dInterp(x)
 
     H = surfaceModelData - bedModelData
 
@@ -56,6 +58,7 @@ def dataToHDF5(fileName, distanceData, thicknessPathData, bedPathData, surfacePa
     functSMB = fc.Function(V, name="SMB")
     functVelocity = fc.Function(V, name="Velocity")
     functT2m = fc.Function(V, name="t2m")
+    functWidth = fc.Function(V, name="width")
 
     functThickness.vector()[:] = thicknessModelData
     functBed.vector()[:] = bedModelData
@@ -63,6 +66,7 @@ def dataToHDF5(fileName, distanceData, thicknessPathData, bedPathData, surfacePa
     functSMB.vector()[:] = smbModelData
     functVelocity.vector()[:] = velocityModelData
     functT2m.vector()[:] = t2mModelData
+    functWidth.vector()[:] = widthModelData
 
     hfile.write(functThickness.vector(), "/thickness")
     hfile.write(functBed.vector(), "/bed")
@@ -70,6 +74,7 @@ def dataToHDF5(fileName, distanceData, thicknessPathData, bedPathData, surfacePa
     hfile.write(functSMB.vector(), "/smb")
     hfile.write(functVelocity.vector(), "/velocity")
     hfile.write(functT2m.vector(), "/t2m")
+    hfile.write(functWidth.vector(), "/width")
     hfile.write(mesh, "/mesh")
 
     profileFile.write(functThickness.vector(), "/thickness")
@@ -78,22 +83,33 @@ def dataToHDF5(fileName, distanceData, thicknessPathData, bedPathData, surfacePa
     profileFile.write(functSMB.vector(), "/smb")
     profileFile.write(functVelocity.vector(), "/velocity")
     profileFile.write(functT2m.vector(), "/t2m")
+    profileFile.write(functWidth.vector(), "/width")
     profileFile.write(mesh, "/mesh")
 
     hfile.close()
     profileFile.close()
 
 
-def interpolateFlowlineData(datasetDictionary, flowline, flowlineDistance, dr, fileName):
-    distanceBetweenPoints = sqrt((flowline[1][0] - flowline[0][0]) ** 2 + (flowline[1][1] - flowline[0][1]) ** 2)
+def interpolateFlowlineData(datasetDictionary, flowlines, flowlineDistance, dr, fileName):
+    distanceBetweenPoints = sqrt(
+        (flowlines[2][1][0] - flowlines[2][0][0]) ** 2 + (flowlines[2][1][1] - flowlines[2][0][1]) ** 2)
     distanceData = linspace(0, flowlineDistance, flowlineDistance / distanceBetweenPoints)
 
     for x in datasetDictionary:
         pathData = []
-        for i in flowline:
+        for i in flowlines[2]:
             pathData.append(datasetDictionary[x].getInterpolatedValue(i[0], i[1])[0][0])
         datasetDictionary[x].pathData = np.array(pathData)
 
+    widthData = []
+    for i in range(0, len(flowlines[2])):
+
+        projPoints = [dataToProj(flowlines[0][i][0], flowlines[0][i][1]),
+                      dataToProj(flowlines[1][i][0], flowlines[1][i][1])]
+        width = sqrt((projPoints[0][0] - projPoints[1][0])**2 + (projPoints[0][1] - projPoints[1][1])**2)
+        widthData.append(width)
+
+    widthData = np.array(widthData)
     # millimeters -> meters then water-equivalent to ice-equivalent
     datasetDictionary['smb'].pathData = datasetDictionary['smb'].pathData * (1.0 / 1000.0) * (916.7 / 1000.0)
 
@@ -105,5 +121,6 @@ def interpolateFlowlineData(datasetDictionary, flowline, flowlineDistance, dr, f
                datasetDictionary['smb'].pathData,
                datasetDictionary['velocity'].pathData,
                datasetDictionary['t2m'].pathData,
-               resolution=dr
-               )
+               widthData,
+               resolution=dr)
+

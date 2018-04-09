@@ -23,7 +23,8 @@ def colorToProj(x, y):
 
 
 def dataToProj(x, y):
-    return dataToColor(colorToProj(x, y))
+    j,k = colorToProj(x, y)
+    return dataToColor(j,k)
 
 
 def colorCoord(x, y):

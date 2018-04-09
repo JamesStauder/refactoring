@@ -395,7 +395,7 @@ class MainWindow(QMainWindow):
             self.imageItemContainer.currentWidget().addItem(self.flowlineMarkers[0][i].lines[0])
         self.runModelButton.setEnabled(True)
 
-        interpolateFlowlineData(self.datasetDict, midFlowline, self.flowlineDistance,
+        interpolateFlowlineData(self.datasetDict, self.flowlines, self.flowlineDistance,
                                 float(self.spatialResolutionLineEdit.text()), self.profileLineEdit.text())
 
     '''
