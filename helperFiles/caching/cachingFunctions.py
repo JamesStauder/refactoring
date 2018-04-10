@@ -99,8 +99,9 @@ def interpolateFlowlineData(datasetDictionary, flowlines, flowlineDistance, dr, 
         pathData = []
         for i in flowlines[2]:
             pathData.append(datasetDictionary[x].getInterpolatedValue(i[0], i[1])[0][0])
-        datasetDictionary[x].pathData = np.array(pathData)
-
+        datasetDictionary[x].pathData.append(np.array(pathData))
+        print x
+        print datasetDictionary[x].pathData
     widthData = []
     for i in range(0, len(flowlines[2])):
 
@@ -111,6 +112,7 @@ def interpolateFlowlineData(datasetDictionary, flowlines, flowlineDistance, dr, 
 
     widthData = np.array(widthData)
     # millimeters -> meters then water-equivalent to ice-equivalent
+    return datasetDictionary
     datasetDictionary['smb'].pathData = datasetDictionary['smb'].pathData * (1.0 / 1000.0) * (916.7 / 1000.0)
 
     dataToHDF5(fileName,
@@ -124,3 +126,25 @@ def interpolateFlowlineData(datasetDictionary, flowlines, flowlineDistance, dr, 
                widthData,
                resolution=dr)
 
+def interpolateFlowlineDataAverage(datasetDictionary, flowlines, flowlineDistance, dr, fileName):
+    for x in datasetDictionary:
+        pathData = []
+        datasetDictionary[x].pathData = []
+        for y in range(0,len(flowlines[0])):
+            total = 0
+            projPoints = [dataToProj(flowlines[0][y][0], flowlines[0][y][1]),dataToProj(flowlines[1][y][0], flowlines[1][y][1])]
+            width = sqrt((projPoints[0][0] - projPoints[1][0])**2 + (projPoints[0][1] - projPoints[1][1])**2)
+            numPoints = int(width/1000)
+            dx = (flowlines[0][y][0] - flowlines[1][y][0])/numPoints
+            dy = (flowlines[0][y][1] - flowlines[1][y][1])/numPoints
+            currX = flowlines[0][y][0]
+            currY = flowlines[0][y][1]
+            for z in range(0, numPoints):
+                total = total + datasetDictionary[x].getInterpolatedValue(currX, currY)[0][0]
+                currX = currX + dx
+                currY = currY + dy
+            pathData.append(total/numPoints)
+        datasetDictionary[x].pathData.append(np.array(pathData))
+        print x
+        print datasetDictionary[x].pathData
+   
