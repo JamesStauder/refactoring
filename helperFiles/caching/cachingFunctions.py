@@ -3,6 +3,7 @@ from scipy.interpolate import interp1d
 import numpy as np
 from scipy import sqrt, linspace
 from ..math_functions import *
+import sys
 
 '''
 Function: dataToHDF5
@@ -154,12 +155,13 @@ def interpolateFlowlineData(datasetDictionary, flowlines, flowlineDistance, dr, 
     widthData = []
     for i in range(0, len(flowlines[2])):
 
-        projPoints = [dataToProj(flowlines[0][i][0], flowlines[0][i][1]),
-                      dataToProj(flowlines[1][i][0], flowlines[1][i][1])]
-        width = sqrt((projPoints[0][0] - projPoints[1][0])**2 + (projPoints[0][1] - projPoints[1][1])**2)
+        Points = [[flowlines[0][i][0], flowlines[0][i][1]],
+                      [flowlines[1][i][0], flowlines[1][i][1]]]
+        width = sqrt((Points[0][0] - Points[1][0])**2 + (Points[0][1] - Points[1][1])**2)
         widthData.append(width)
 
     widthData = np.array(widthData)
+
     # millimeters -> meters then water-equivalent to ice-equivalent
     datasetDictionary['smb'].pathData[0] = datasetDictionary['smb'].pathData[0] * (1.0 / 1000.0) * (916.7 / 1000.0)
     datasetDictionary['smb'].pathData[1] = datasetDictionary['smb'].pathData[1] * (1.0 / 1000.0) * (916.7 / 1000.0)
@@ -182,11 +184,11 @@ def interpolateFlowlineDataAverage(datasetDictionary, flowlines, flowlineDistanc
         datasetDictionary[x].pathData = []
         for y in range(0,len(flowlines[0])):
             total = 0
-            projPoints = [dataToProj(flowlines[0][y][0], flowlines[0][y][1]),dataToProj(flowlines[1][y][0], flowlines[1][y][1])]
-            width = sqrt((projPoints[0][0] - projPoints[1][0])**2 + (projPoints[0][1] - projPoints[1][1])**2)
-            numPoints = int(width/1000)
-            dx = (flowlines[0][y][0] - flowlines[1][y][0])/numPoints
-            dy = (flowlines[0][y][1] - flowlines[1][y][1])/numPoints
+            Points = [[flowlines[0][y][0], flowlines[0][y][1]],[flowlines[1][y][0], flowlines[1][y][1]]]
+            width = sqrt((Points[0][0] - Points[1][0])**2 + (Points[0][1] - Points[1][1])**2)
+            numPoints = int(width/100)
+            dx = (flowlines[1][y][0] - flowlines[0][y][0])/numPoints
+            dy = (flowlines[1][y][1] - flowlines[0][y][1])/numPoints
             currX = flowlines[0][y][0]
             currY = flowlines[0][y][1]
             for z in range(0, numPoints):
