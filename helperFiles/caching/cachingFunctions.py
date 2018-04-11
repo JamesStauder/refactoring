@@ -20,12 +20,20 @@ Last edited: 2/23/18
 def dataToHDF5(fileName, distanceData, thicknessPathData, bedPathData, surfacePathData, smbPathData, velocityPathData,
                t2mPathData, widthData, resolution=1000):
     # Create interps for each of our variables
-    thickness1dInterp = interp1d(distanceData, thicknessPathData)
-    bed1dInterp = interp1d(distanceData, bedPathData)
-    surface1dInterp = interp1d(distanceData, surfacePathData)
-    smb1dInterp = interp1d(distanceData, smbPathData)
-    velocity1dInterp = interp1d(distanceData, velocityPathData)
-    t2m1dInterp = interp1d(distanceData, t2mPathData)
+    thickness1dInterpAvg = interp1d(distanceData, thicknessPathData[0])
+    bed1dInterpAvg = interp1d(distanceData, bedPathData[0])
+    surface1dInterpAvg = interp1d(distanceData, surfacePathData[0])
+    smb1dInterpAvg = interp1d(distanceData, smbPathData[0])
+    velocity1dInterpAvg = interp1d(distanceData, velocityPathData[0])
+    t2m1dInterpAvg = interp1d(distanceData, t2mPathData[0])
+
+    thickness1dInterp = interp1d(distanceData, thicknessPathData[1])
+    bed1dInterp = interp1d(distanceData, bedPathData[1])
+    surface1dInterp = interp1d(distanceData, surfacePathData[1])
+    smb1dInterp = interp1d(distanceData, smbPathData[1])
+    velocity1dInterp = interp1d(distanceData, velocityPathData[1])
+    t2m1dInterp = interp1d(distanceData, t2mPathData[1])
+
     width1dInterp = interp1d(distanceData, widthData)
 
     numberOfPoints = int(np.floor(distanceData[-1] / float(resolution)))
@@ -42,9 +50,18 @@ def dataToHDF5(fileName, distanceData, thicknessPathData, bedPathData, surfacePa
     t2mModelData = t2m1dInterp(x)
     widthModelData = width1dInterp(x)
 
+    thicknessModelDataAvg = thickness1dInterpAvg(x)
+    bedModelDataAvg = bed1dInterpAvg(x)
+    surfaceModelDataAvg = surface1dInterpAvg(x)
+    smbModelDataAvg = smb1dInterpAvg(x)
+    velocityModelDataAvg = velocity1dInterpAvg(x)
+    t2mModelDataAvg = t2m1dInterpAvg(x)
+
     H = surfaceModelData - bedModelData
+    HAvg = surfaceModelDataAvg - bedModelDataAvg
 
     surfaceModelData[H <= thklim] = bedModelData[H <= thklim]
+    surfaceModelDataAvg[HAvg <= thklim] = bedModelDataAvg[HAvg <= thklim]
 
     fileName = '.data/' + fileName
 
@@ -60,6 +77,13 @@ def dataToHDF5(fileName, distanceData, thicknessPathData, bedPathData, surfacePa
     functT2m = fc.Function(V, name="t2m")
     functWidth = fc.Function(V, name="width")
 
+    functThicknessAvg = fc.Function(V, name="ThicknessAvg")
+    functBedAvg = fc.Function(V, name="BedAvg")
+    functSurfaceAvg = fc.Function(V, name="SurfaceAvg")
+    functSMBAvg = fc.Function(V, name="SMBAvg")
+    functVelocityAvg = fc.Function(V, name="VelocityAvg")
+    functT2mAvg = fc.Function(V, name="t2mAvg")
+
     functThickness.vector()[:] = thicknessModelData
     functBed.vector()[:] = bedModelData
     functSurface.vector()[:] = surfaceModelData
@@ -68,12 +92,26 @@ def dataToHDF5(fileName, distanceData, thicknessPathData, bedPathData, surfacePa
     functT2m.vector()[:] = t2mModelData
     functWidth.vector()[:] = widthModelData
 
+    functThicknessAvg.vector()[:] = thicknessModelDataAvg
+    functBedAvg.vector()[:] = bedModelDataAvg
+    functSurfaceAvg.vector()[:] = surfaceModelDataAvg
+    functSMBAvg.vector()[:] = smbModelDataAvg
+    functVelocityAvg.vector()[:] = velocityModelDataAvg
+    functT2mAvg.vector()[:] = t2mModelDataAvg
+
     hfile.write(functThickness.vector(), "/thickness")
     hfile.write(functBed.vector(), "/bed")
     hfile.write(functSurface.vector(), "/surface")
     hfile.write(functSMB.vector(), "/smb")
     hfile.write(functVelocity.vector(), "/velocity")
     hfile.write(functT2m.vector(), "/t2m")
+
+    hfile.write(functThicknessAvg.vector(), "/thicknessAvg")
+    hfile.write(functBedAvg.vector(), "/bedAvg")
+    hfile.write(functSurfaceAvg.vector(), "/surfaceAvg")
+    hfile.write(functSMBAvg.vector(), "/smbAvg")
+    hfile.write(functVelocityAvg.vector(), "/velocityAvg")
+    hfile.write(functT2mAvg.vector(), "/t2mAvg")
     hfile.write(functWidth.vector(), "/width")
     hfile.write(mesh, "/mesh")
 
@@ -86,6 +124,12 @@ def dataToHDF5(fileName, distanceData, thicknessPathData, bedPathData, surfacePa
     profileFile.write(functWidth.vector(), "/width")
     profileFile.write(mesh, "/mesh")
 
+    profileFile.write(functThicknessAvg.vector(), "/thicknessAvg")
+    profileFile.write(functBedAvg.vector(), "/bedAvg")
+    profileFile.write(functSurfaceAvg.vector(), "/surfaceAvg")
+    profileFile.write(functSMBAvg.vector(), "/smbAvg")
+    profileFile.write(functVelocityAvg.vector(), "/velocityAvg")
+    profileFile.write(functT2mAvg.vector(), "/t2mAvg")
     hfile.close()
     profileFile.close()
 
@@ -100,8 +144,13 @@ def interpolateFlowlineData(datasetDictionary, flowlines, flowlineDistance, dr, 
         for i in flowlines[2]:
             pathData.append(datasetDictionary[x].getInterpolatedValue(i[0], i[1])[0][0])
         datasetDictionary[x].pathData.append(np.array(pathData))
+
+        '''
         print x
         print datasetDictionary[x].pathData
+        print ""
+        '''
+
     widthData = []
     for i in range(0, len(flowlines[2])):
 
@@ -112,8 +161,8 @@ def interpolateFlowlineData(datasetDictionary, flowlines, flowlineDistance, dr, 
 
     widthData = np.array(widthData)
     # millimeters -> meters then water-equivalent to ice-equivalent
-    return datasetDictionary
-    datasetDictionary['smb'].pathData = datasetDictionary['smb'].pathData * (1.0 / 1000.0) * (916.7 / 1000.0)
+    datasetDictionary['smb'].pathData[0] = datasetDictionary['smb'].pathData[0] * (1.0 / 1000.0) * (916.7 / 1000.0)
+    datasetDictionary['smb'].pathData[1] = datasetDictionary['smb'].pathData[1] * (1.0 / 1000.0) * (916.7 / 1000.0)
 
     dataToHDF5(fileName,
                distanceData,
@@ -125,6 +174,7 @@ def interpolateFlowlineData(datasetDictionary, flowlines, flowlineDistance, dr, 
                datasetDictionary['t2m'].pathData,
                widthData,
                resolution=dr)
+
 
 def interpolateFlowlineDataAverage(datasetDictionary, flowlines, flowlineDistance, dr, fileName):
     for x in datasetDictionary:
@@ -145,6 +195,3 @@ def interpolateFlowlineDataAverage(datasetDictionary, flowlines, flowlineDistanc
                 currY = currY + dy
             pathData.append(total/numPoints)
         datasetDictionary[x].pathData.append(np.array(pathData))
-        print x
-        print datasetDictionary[x].pathData
-   
