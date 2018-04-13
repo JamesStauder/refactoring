@@ -7,6 +7,7 @@ from Dataset import *
 from Marker import *
 from ModelGUI import *
 from ..caching.cachingFunctions import *
+import time
 
 
 class MainWindow(QMainWindow):
@@ -360,6 +361,64 @@ class MainWindow(QMainWindow):
         # Get center point at terminus between two shear margins
         x1, y1 = self.flowlineMarkers[0][0].cx, self.flowlineMarkers[0][0].cy
         x2, y2 = self.flowlineMarkers[1][0].cx, self.flowlineMarkers[1][0].cy
+
+        numberOfLines = 100
+        dx = (x2 - x1) / numberOfLines
+        dy = (y2 - y1) / numberOfLines
+        currX = x1
+        currY = y1
+
+        #Create center flowlines
+        for _ in range(0, numberOfLines - 1):
+            currX = currX + dx
+            currY = currY + dy
+
+            xProj, yProj = colorToProj(currX, currY)
+            newLine = []
+
+            for i in range(self.lengthOfFlowline):
+                newLine.append(None)
+            newLine[0] = [xProj, yProj]
+            newLine = self.flowIntegrator.integrate(xProj, yProj, newLine, 0,
+                                                    float(self.spatialResolutionLineEdit.text()))
+
+            newFlowlineMarkers = newLine[::self.integratorPerMarker]
+            for i in range(len(newFlowlineMarkers)):
+                dataX = newFlowlineMarkers[i][0]
+                dataY = newFlowlineMarkers[i][1]
+                cx, cy = colorCoord(dataX, dataY)
+                newFlowlineMarkers[i] = Marker(cx, cy, dataX, dataY, self.imageItemContainer.currentWidget())
+            self.displayMarkers(newFlowlineMarkers)
+            self.flowlineMarkers.append(newFlowlineMarkers)
+
+            self.flowlines.append(newLine)
+        for i in range(len(self.flowlineMarkers[0])):
+            for j in range(3, len(self.flowlines)):
+                xValues = [self.flowlineMarkers[j - 1][i].cx, self.flowlineMarkers[j][i].cx]
+                yValues = [self.flowlineMarkers[j - 1][i].cy, self.flowlineMarkers[j][i].cy]
+
+                self.flowlineMarkers[j][i].setLine(
+                    pg.PlotDataItem(xValues, yValues, connect='all', pen=skinnyBlackPlotPen), 0)
+                self.imageItemContainer.currentWidget().addItem(self.flowlineMarkers[j][i].lines[0])
+
+            xValues = [self.flowlineMarkers[0][i].cx, self.flowlineMarkers[2][i].cx]
+            yValues = [self.flowlineMarkers[0][i].cy, self.flowlineMarkers[2][i].cy]
+
+            self.flowlineMarkers[0][i].setLine(pg.PlotDataItem(xValues, yValues, connect='all', pen=skinnyBlackPlotPen),
+                                               0)
+            self.imageItemContainer.currentWidget().addItem(self.flowlineMarkers[0][i].lines[0])
+
+            xValues = [self.flowlineMarkers[1][i].cx, self.flowlineMarkers[len(self.flowlines) - 1][i].cx]
+            yValues = [self.flowlineMarkers[1][i].cy, self.flowlineMarkers[len(self.flowlines) - 1][i].cy]
+
+            self.flowlineMarkers[1][i].setLine(pg.PlotDataItem(xValues, yValues, connect='all', pen=skinnyBlackPlotPen),
+                                               0)
+            self.imageItemContainer.currentWidget().addItem(self.flowlineMarkers[1][i].lines[0])
+
+        # TODO: Midflowline is the middle of the generated flowlines.
+        self.midFlowline = self.flowlines[(len(self.flowlines)-2)/2]
+
+        '''
         xMid = (x1 + x2) / 2
         yMid = (y1 + y2) / 2
         xProj, yProj = colorToProj(xMid, yMid)
@@ -399,6 +458,7 @@ class MainWindow(QMainWindow):
                                        float(self.spatialResolutionLineEdit.text()), self.profileLineEdit.text())
         interpolateFlowlineData(self.datasetDict, self.flowlines, self.flowlineDistance,
                                 float(self.spatialResolutionLineEdit.text()), self.profileLineEdit.text())
+        '''
 
     '''
     Function: displayMarkers
