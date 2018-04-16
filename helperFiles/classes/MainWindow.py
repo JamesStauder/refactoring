@@ -420,7 +420,7 @@ class MainWindow(QMainWindow):
             self.imageItemContainer.currentWidget().addItem(self.flowlineMarkers[1][i].lines[0])
             '''
 
-        # TODO: Midflowline is the middle of the generated flowlines.
+
         midFlowline = self.flowlines[((len(self.flowlines) - 2) / 2) + 2]
 
         newFlowlineMarkers = midFlowline[::self.integratorPerMarker]
@@ -440,47 +440,6 @@ class MainWindow(QMainWindow):
         interpolateFlowlineData(self.datasetDict, self.flowlines,midFlowline, self.flowlineDistance,
                                 float(self.spatialResolutionLineEdit.text()), self.profileLineEdit.text())
 
-        '''
-        xMid = (x1 + x2) / 2
-        yMid = (y1 + y2) / 2
-        xProj, yProj = colorToProj(xMid, yMid)
-
-        # Create mid flowline
-        midFlowline = []
-        for i in range(self.lengthOfFlowline):
-            midFlowline.append(None)
-        midFlowline[0] = [xProj, yProj]
-        midFlowline = self.flowIntegrator.integrate(
-            xProj, yProj, midFlowline, 0,
-            float(self.spatialResolutionLineEdit.text()))
-
-        # create new Markers that will be displayed on the GUI.
-        newFlowlineMarkers = midFlowline[::self.integratorPerMarker]
-        for i in range(len(newFlowlineMarkers)):
-            dx = newFlowlineMarkers[i][0]
-            dy = newFlowlineMarkers[i][1]
-            cx, cy = colorCoord(dx, dy)
-            newFlowlineMarkers[i] = Marker(cx, cy, dx, dy, self.imageItemContainer.currentWidget())
-        self.displayMarkers(newFlowlineMarkers)
-
-        self.flowlines.append(midFlowline)
-        self.flowlineMarkers.append(newFlowlineMarkers)
-
-        # Connect the shear margins by the ith index.
-        for i in range(len(self.flowlineMarkers[0])):
-            xValues = [self.flowlineMarkers[1][i].cx, self.flowlineMarkers[0][i].cx]
-            yValues = [self.flowlineMarkers[1][i].cy, self.flowlineMarkers[0][i].cy]
-
-            self.flowlineMarkers[0][i].setLine(pg.PlotDataItem(xValues, yValues, connect='all', pen=skinnyBlackPlotPen),
-                                               0)
-            self.imageItemContainer.currentWidget().addItem(self.flowlineMarkers[0][i].lines[0])
-        self.runModelButton.setEnabled(True)
-
-        interpolateFlowlineDataAverage(self.datasetDict, self.flowlines, self.flowlineDistance,
-                                       float(self.spatialResolutionLineEdit.text()), self.profileLineEdit.text())
-        interpolateFlowlineData(self.datasetDict, self.flowlines, self.flowlineDistance,
-                                float(self.spatialResolutionLineEdit.text()), self.profileLineEdit.text())
-        '''
 
     '''
     Function: displayMarkers
