@@ -368,7 +368,7 @@ class MainWindow(QMainWindow):
         currX = x1
         currY = y1
 
-        #Create center flowlines
+        # Create center flowlines
         for _ in range(0, numberOfLines - 1):
             currX = currX + dx
             currY = currY + dy
@@ -381,7 +381,10 @@ class MainWindow(QMainWindow):
             newLine[0] = [xProj, yProj]
             newLine = self.flowIntegrator.integrate(xProj, yProj, newLine, 0,
                                                     float(self.spatialResolutionLineEdit.text()))
+            self.flowlines.append(newLine)
 
+            '''
+            #Code to create Markers for these flowlines. 
             newFlowlineMarkers = newLine[::self.integratorPerMarker]
             for i in range(len(newFlowlineMarkers)):
                 dataX = newFlowlineMarkers[i][0]
@@ -390,8 +393,9 @@ class MainWindow(QMainWindow):
                 newFlowlineMarkers[i] = Marker(cx, cy, dataX, dataY, self.imageItemContainer.currentWidget())
             self.displayMarkers(newFlowlineMarkers)
             self.flowlineMarkers.append(newFlowlineMarkers)
+            '
 
-            self.flowlines.append(newLine)
+
         for i in range(len(self.flowlineMarkers[0])):
             for j in range(3, len(self.flowlines)):
                 xValues = [self.flowlineMarkers[j - 1][i].cx, self.flowlineMarkers[j][i].cx]
@@ -414,9 +418,27 @@ class MainWindow(QMainWindow):
             self.flowlineMarkers[1][i].setLine(pg.PlotDataItem(xValues, yValues, connect='all', pen=skinnyBlackPlotPen),
                                                0)
             self.imageItemContainer.currentWidget().addItem(self.flowlineMarkers[1][i].lines[0])
+            '''
 
         # TODO: Midflowline is the middle of the generated flowlines.
-        self.midFlowline = self.flowlines[(len(self.flowlines)-2)/2]
+        midFlowline = self.flowlines[((len(self.flowlines) - 2) / 2) + 2]
+
+        newFlowlineMarkers = midFlowline[::self.integratorPerMarker]
+
+        for i in range(len(newFlowlineMarkers)):
+            dx = newFlowlineMarkers[i][0]
+            dy = newFlowlineMarkers[i][1]
+            cx, cy = colorCoord(dx, dy)
+            newFlowlineMarkers[i] = Marker(cx, cy, dx, dy, self.imageItemContainer.currentWidget())
+
+        self.displayMarkers(newFlowlineMarkers)
+        self.flowlineMarkers.append(newFlowlineMarkers)
+
+        self.runModelButton.setEnabled(True)
+        self.velocityWidthButton.setEnabled(False)
+
+        interpolateFlowlineData(self.datasetDict, self.flowlines,midFlowline, self.flowlineDistance,
+                                float(self.spatialResolutionLineEdit.text()), self.profileLineEdit.text())
 
         '''
         xMid = (x1 + x2) / 2
