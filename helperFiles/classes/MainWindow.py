@@ -97,10 +97,10 @@ class MainWindow(QMainWindow):
         self.runModelButton.setMaximumWidth(self.maxWidth)
         self.buttonBox.addWidget(self.runModelButton)
 
-        self.generateMeshButton = QtGui.QPushButton('Generate Mesh')
-        self.generateMeshButton.setEnabled(False)
-        self.generateMeshButton.setMaximumWidth(self.maxWidth)
-        self.buttonBox.addWidget(self.generateMeshButton)
+        self.resetButton = QtGui.QPushButton('Reset')
+        self.resetButton.setEnabled(False)
+        self.resetButton.setMaximumWidth(self.maxWidth)
+        self.buttonBox.addWidget(self.resetButton)
 
         self.velocityWidthButton = QtGui.QPushButton('Create Profile')
         self.velocityWidthButton.setEnabled(False)
@@ -439,6 +439,8 @@ class MainWindow(QMainWindow):
 
         interpolateFlowlineData(self.datasetDict, self.flowlines,midFlowline, self.flowlineDistance,
                                 float(self.spatialResolutionLineEdit.text()), self.profileLineEdit.text())
+        self.resetButton.setEnabled(True)
+        print self.imageItemContainer.currentWidget()
 
 
     '''
@@ -513,6 +515,16 @@ class MainWindow(QMainWindow):
     def runModel(self):
         m = ModelGUI(self)
 
+
+    def reset(self):
+        del self.flowlines[:]
+        del self.flowlineMarkers[:]
+        for x in self.datasetDict:
+            self.datasetDict[x].pathData = None
+        self.runModelButton.setEnabled(False)
+
+
+
     '''
     Function: connectButtons
     Argument list: None
@@ -529,6 +541,7 @@ class MainWindow(QMainWindow):
         self.instructionButton.clicked.connect(self.showInstructions)
         self.velocityWidthButton.clicked.connect(self.calcVelocityWidth)
         self.runModelButton.clicked.connect(self.runModel)
+        self.resetButton.clicked.connect(self.reset)
 
     def showInstructions(self):
         Instructions(self)
