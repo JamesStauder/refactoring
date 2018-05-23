@@ -33,7 +33,7 @@ Last edited: 3/2/18
 
 # TODO: Unit Test: Calculating outside of range
 class IceCube():
-    def __init__(self, fileName, timeEnd, timeStep):
+    def __init__(self, fileName, timeEnd, timeStep, average=False):
 
         self.times = []
         self.BB = []
@@ -81,9 +81,14 @@ class IceCube():
         self.H0 = df.Function(self.Q)
         self.A = df.Function(self.Q)
 
-        self.inFile.read(self.S0.vector(), "/surface", True)
-        self.inFile.read(self.B.vector(), "/bed", True)
-        self.inFile.read(self.A.vector(), "/smb", True)
+        if average:
+            self.inFile.read(self.S0.vector(), "/surfaceAvg", True)
+            self.inFile.read(self.B.vector(), "/bedAvg", True)
+            self.inFile.read(self.A.vector(), "/smbAvg", True)
+        else:
+            self.inFile.read(self.S0.vector(), "/surface", True)
+            self.inFile.read(self.B.vector(), "/bed", True)
+            self.inFile.read(self.A.vector(), "/smb", True)
 
         self.H0.assign(self.S0 - self.B)
 
@@ -160,7 +165,7 @@ class IceCube():
 
         self.coupled_solver = df.NonlinearVariationalSolver(self.coupled_problem)
 
-        # Accquire the optimizations in fenics_optimizations
+        # Acquire the optimizations in fenics_optimizations
         set_solver_options(self.coupled_solver)
 
         self.t = 0

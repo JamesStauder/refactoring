@@ -98,7 +98,7 @@ class MainWindow(QMainWindow):
         self.buttonBox.addWidget(self.runModelButton)
 
         self.resetButton = QtGui.QPushButton('Reset')
-        self.resetButton.setEnabled(False)
+        self.resetButton.setEnabled(True)
         self.resetButton.setMaximumWidth(self.maxWidth)
         self.buttonBox.addWidget(self.resetButton)
 
@@ -211,6 +211,9 @@ class MainWindow(QMainWindow):
         if self.isMarkerSelected is False:
 
             # Check to see if click selects a marker. If so memoize the marker and the flowline Position
+            # This block checks every marker along flowline and reintegrates up. Seems ill advised as
+            # because of new averaging method
+            '''
             for i in range(len(self.flowlineMarkers)):
                 for j in range(len(self.flowlineMarkers[i])):
                     if self.flowlineMarkers[i][j].checkClicked(e.pos()):
@@ -224,6 +227,18 @@ class MainWindow(QMainWindow):
                             if self.flowlines[i][k] == [tempX, tempY]:
                                 self.whichIndexOfFlowlineSelected = [i, k]
                         break
+            '''
+
+            # Checks to see only if first marker in each flowline is detected.
+            for i in range(len(self.flowlineMarkers)):
+                if self.flowlineMarkers[i][0].checkClicked(e.pos()):
+                    self.isMarkerSelected = True
+                    self.whichMarkerSelected = self.flowlineMarkers[i][0]
+                    self.selectedMarkerPosition = [i, 0]
+
+                    self.displayMarkerVariables()
+                    self.whichIndexOfFlowlineSelected = [i, 0]
+                    break
 
             # If no marker selected previously or currently create new flowline. Also cannot create more
             # then 2 flowlines.
@@ -369,6 +384,7 @@ class MainWindow(QMainWindow):
         currY = y1
 
         # Create center flowlines
+        t0 = time.time()
         for _ in range(0, numberOfLines - 1):
             currX = currX + dx
             currY = currY + dy
@@ -420,7 +436,6 @@ class MainWindow(QMainWindow):
             self.imageItemContainer.currentWidget().addItem(self.flowlineMarkers[1][i].lines[0])
             '''
 
-
         midFlowline = self.flowlines[((len(self.flowlines) - 2) / 2) + 2]
 
         newFlowlineMarkers = midFlowline[::self.integratorPerMarker]
@@ -439,9 +454,8 @@ class MainWindow(QMainWindow):
 
         interpolateFlowlineData(self.datasetDict, self.flowlines,midFlowline, self.flowlineDistance,
                                 float(self.spatialResolutionLineEdit.text()), self.profileLineEdit.text())
-        self.resetButton.setEnabled(True)
-        print self.imageItemContainer.currentWidget()
-
+        print "Profile creation took :", time.time() - t0
+        # self.resetButton.setEnabled(True)
 
     '''
     Function: displayMarkers
@@ -515,15 +529,14 @@ class MainWindow(QMainWindow):
     def runModel(self):
         m = ModelGUI(self)
 
-
     def reset(self):
         del self.flowlines[:]
         del self.flowlineMarkers[:]
         for x in self.datasetDict:
             self.datasetDict[x].pathData = None
         self.runModelButton.setEnabled(False)
-
-
+        self.spatialResolutionLineEdit.setReadOnly(False)
+        self.distanceLineEdit.setReadOnly(False)
 
     '''
     Function: connectButtons
