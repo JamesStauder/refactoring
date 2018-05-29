@@ -29,8 +29,8 @@ class ModelGUI(QtGui.QMainWindow):
 
         runAverage = self.parent.widthAverageButton.checkState() == 2
 
-        self.runModel = IceCube('.data/latestProfile.h5', float(self.timeEndLineEdit.text()),
-                                float(self.timeStepLineEdit.text()), average=runAverage)
+        self.runModel = BlackBox('.data/latestProfile.h5', float(self.timeEndLineEdit.text()),
+                                 float(self.timeStepLineEdit.text()), average=runAverage)
         self.plots = ModelPlotter(self.runModel.strs, self.runModel.mesh, self.runModel.Bhat, self.plot1, self.plot2,
                                   self.plot3)
 

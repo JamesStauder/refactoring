@@ -1,7 +1,7 @@
 data
-cacheFolde*
-createJson.py
-createJson2.py
+cacheFolder
+cacheFolder.tar.gz
+createJSON2.py
 ProjectionTransfer.py
 .data
 *.pyc
