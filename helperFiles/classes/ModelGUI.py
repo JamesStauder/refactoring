@@ -26,12 +26,22 @@ class ModelGUI(QtGui.QMainWindow):
 
         self.runButton.clicked.connect(self.runModelEvent)
         self.pauseButton.clicked.connect(self.pauseModel)
+
+        runAverage = self.parent.widthAverageButton.checkState() == 2
+
         self.runModel = IceCube('.data/latestProfile.h5', float(self.timeEndLineEdit.text()),
-                                float(self.timeStepLineEdit.text()))
-        self.plots = ModelPlotter(self.runModel.strs, self.runModel.mesh, self.runModel.Bhat, self.plot1, self.plot2, self.plot3)
+                                float(self.timeStepLineEdit.text()), average=runAverage)
+        self.plots = ModelPlotter(self.runModel.strs, self.runModel.mesh, self.runModel.Bhat, self.plot1, self.plot2,
+                                  self.plot3)
+
         self.showMaximized()
         self.run = True
         self.show()
+        self.closeEvent = self.windowClosed
+
+    def windowClosed(self, e):
+        if self.run:
+            self.run = False
 
     def createRightPanel(self):
         self.rightPanelWidget = QtGui.QWidget()

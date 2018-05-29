@@ -73,6 +73,14 @@ class MainWindow(QMainWindow):
         self.spatialResolutionLayout.addWidget(self.distanceLineEdit)
         self.buttonBox.addWidget(self.distanceWidget)
 
+        self.averageWidget = QtGui.QWidget()
+        self.averageLayout = QtGui.QHBoxLayout()
+        self.averageWidget.setLayout(self.averageLayout)
+        self.widthAverageButton = QtGui.QCheckBox('Use Width Average')
+        self.widthAverageButton.setTristate(False)
+        self.averageLayout.addWidget(self.widthAverageButton)
+        self.buttonBox.addWidget(self.averageWidget)
+
         self.profileWidget = QtGui.QWidget()
         self.profileLayout = QtGui.QHBoxLayout()
         self.profileWidget.setLayout(self.profileLayout)

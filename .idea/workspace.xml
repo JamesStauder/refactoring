@@ -2,25 +2,13 @@
 <project version="4">
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/helperFiles/classes/Marker.py" line="54" />
-    <bookmark url="file://$PROJECT_DIR$/createJSON.py" line="53" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="19ca5ea4-b381-42fd-8372-8f15379ef50a" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/createJSON.py" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cacheFolder/1000_Model.json" afterPath="$PROJECT_DIR$/cacheFolder/1000_Model.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cacheFolder/2000_Model.json" afterPath="$PROJECT_DIR$/cacheFolder/2000_Model.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cacheFolder/3000_Model.json" afterPath="$PROJECT_DIR$/cacheFolder/3000_Model.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cacheFolder/4000_Model.json" afterPath="$PROJECT_DIR$/cacheFolder/4000_Model.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cacheFolder/4000_Shape.json" afterPath="$PROJECT_DIR$/cacheFolder/4000_Shape.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cacheFolder/5000_Model.json" afterPath="$PROJECT_DIR$/cacheFolder/5000_Model.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/createJSON2.py" afterPath="$PROJECT_DIR$/createJSON2.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/greenland.py" afterPath="$PROJECT_DIR$/greenland.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/helperFiles/classes/BlackBox.py" afterPath="$PROJECT_DIR$/helperFiles/classes/BlackBox.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/helperFiles/classes/MainWindow.py" afterPath="$PROJECT_DIR$/helperFiles/classes/MainWindow.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/helperFiles/classes/ModelGUI.py" afterPath="$PROJECT_DIR$/helperFiles/classes/ModelGUI.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/helperFiles/classes/ModelLegend.py" afterPath="$PROJECT_DIR$/helperFiles/classes/ModelLegend.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/helperFiles/classes/ModelPlotter.py" afterPath="$PROJECT_DIR$/helperFiles/classes/ModelPlotter.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/helperFiles/constants.py" afterPath="$PROJECT_DIR$/helperFiles/constants.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/helperFiles/support/simulation_parameters.py" afterPath="$PROJECT_DIR$/helperFiles/support/simulation_parameters.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -34,8 +22,8 @@
       <file leaf-file-name="MainWindow.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/helperFiles/classes/MainWindow.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-5318">
-              <caret line="12" column="30" lean-forward="false" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
+            <state relative-caret-position="240">
+              <caret line="79" column="50" lean-forward="false" selection-start-line="79" selection-start-column="50" selection-end-line="79" selection-end-column="50" />
               <folding />
             </state>
           </provider>
@@ -44,82 +32,18 @@
       <file leaf-file-name="BlackBox.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/helperFiles/classes/BlackBox.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="630">
-              <caret line="122" column="33" lean-forward="false" selection-start-line="122" selection-start-column="33" selection-end-line="122" selection-end-column="33" />
+            <state relative-caret-position="2460">
+              <caret line="172" column="18" lean-forward="true" selection-start-line="172" selection-start-column="18" selection-end-line="172" selection-end-column="18" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ModelGUI.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ModelGUI.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/helperFiles/classes/ModelGUI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="30" column="93" lean-forward="false" selection-start-line="30" selection-start-column="93" selection-end-line="30" selection-end-column="93" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ModelLegend.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/helperFiles/classes/ModelLegend.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="427">
-              <caret line="33" column="52" lean-forward="false" selection-start-line="33" selection-start-column="52" selection-end-line="33" selection-end-column="52" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="simulation_parameters.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/helperFiles/support/simulation_parameters.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ModelPlotter.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/helperFiles/classes/ModelPlotter.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="279">
-              <caret line="32" column="52" lean-forward="false" selection-start-line="32" selection-start-column="52" selection-end-line="32" selection-end-column="52" />
-              <folding>
-                <element signature="e#0#26#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="constants.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/helperFiles/constants.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="23" column="41" lean-forward="false" selection-start-line="23" selection-start-column="41" selection-end-line="23" selection-end-column="41" />
-              <folding>
-                <element signature="e#0#22#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="expressions.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/helperFiles/support/expressions.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="momentum.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/helperFiles/support/momentum.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-801">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="420">
+              <caret line="32" column="87" lean-forward="false" selection-start-line="32" selection-start-column="87" selection-end-line="32" selection-end-column="87" />
               <folding />
             </state>
           </provider>
@@ -154,14 +78,14 @@
         <option value="$PROJECT_DIR$/createJSON.py" />
         <option value="$PROJECT_DIR$/helperFiles/classes/FlowIntegrator.py" />
         <option value="$PROJECT_DIR$/helperFiles/caching/cachingFunctions.py" />
-        <option value="$PROJECT_DIR$/helperFiles/classes/MainWindow.py" />
         <option value="$PROJECT_DIR$/helperFiles/classes/BlackBox.py" />
         <option value="$PROJECT_DIR$/helperFiles/support/simulation_parameters.py" />
         <option value="$PROJECT_DIR$/greenland.py" />
-        <option value="$PROJECT_DIR$/helperFiles/classes/ModelGUI.py" />
         <option value="$PROJECT_DIR$/helperFiles/constants.py" />
         <option value="$PROJECT_DIR$/helperFiles/classes/ModelPlotter.py" />
         <option value="$PROJECT_DIR$/helperFiles/classes/ModelLegend.py" />
+        <option value="$PROJECT_DIR$/helperFiles/classes/MainWindow.py" />
+        <option value="$PROJECT_DIR$/helperFiles/classes/ModelGUI.py" />
       </list>
     </option>
   </component>
@@ -207,6 +131,12 @@
               <item name="refactoring" type="462c0819:PsiDirectoryNode" />
               <item name="helperFiles" type="462c0819:PsiDirectoryNode" />
               <item name="caching" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="refactoring" type="b2602c69:ProjectViewProjectNode" />
+              <item name="refactoring" type="462c0819:PsiDirectoryNode" />
+              <item name="helperFiles" type="462c0819:PsiDirectoryNode" />
+              <item name="classes" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="refactoring" type="b2602c69:ProjectViewProjectNode" />
@@ -313,7 +243,7 @@
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33079123" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32983795" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.178762" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.178762" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32929105" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32793137" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -329,7 +259,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="8" />
+      <option name="time" value="9" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -590,16 +520,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/createJSON.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="355">
-          <caret line="47" column="0" lean-forward="false" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
-          <folding>
-            <element signature="e#1#11#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/helperFiles/classes/FlowIntegrator.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="930">
@@ -630,26 +550,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/helperFiles/classes/MainWindow.py">
+    <entry file="file://$PROJECT_DIR$/helperFiles/classes/ModelLegend.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5318">
-          <caret line="12" column="30" lean-forward="false" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/helperFiles/classes/BlackBox.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="122" column="33" lean-forward="false" selection-start-line="122" selection-start-column="33" selection-end-line="122" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/helperFiles/classes/ModelGUI.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="30" column="93" lean-forward="false" selection-start-line="30" selection-start-column="93" selection-end-line="30" selection-end-column="93" />
+        <state relative-caret-position="142">
+          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -657,34 +561,18 @@
     <entry file="file://$PROJECT_DIR$/helperFiles/support/simulation_parameters.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
-          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/helperFiles/support/expressions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="13" column="0" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/helperFiles/classes/ModelPlotter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="279">
+        <state relative-caret-position="480">
           <caret line="32" column="52" lean-forward="false" selection-start-line="32" selection-start-column="52" selection-end-line="32" selection-end-column="52" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/helperFiles/support/momentum.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-801">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -698,10 +586,50 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/helperFiles/classes/ModelLegend.py">
+    <entry file="file://$PROJECT_DIR$/helperFiles/support/expressions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="427">
-          <caret line="33" column="52" lean-forward="false" selection-start-line="33" selection-start-column="52" selection-end-line="33" selection-end-column="52" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/helperFiles/support/momentum.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/createJSON.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="355">
+          <caret line="47" column="0" lean-forward="false" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/helperFiles/classes/BlackBox.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2460">
+          <caret line="172" column="18" lean-forward="true" selection-start-line="172" selection-start-column="18" selection-end-line="172" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/helperFiles/classes/MainWindow.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="79" column="50" lean-forward="false" selection-start-line="79" selection-start-column="50" selection-end-line="79" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/helperFiles/classes/ModelGUI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="32" column="87" lean-forward="false" selection-start-line="32" selection-start-column="87" selection-end-line="32" selection-end-column="87" />
           <folding />
         </state>
       </provider>
