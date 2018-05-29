@@ -4,13 +4,14 @@ from ModelLegend import *
 
 
 class ModelPlotter(object):
-    def __init__(self, strs, mesh, plot1, plot2, plot3):
+    def __init__(self, strs, mesh, BHat, plot1, plot2, plot3):
 
         self.run = True
         self.strs = strs
         self.mesh = mesh
         self.x = mesh.coordinates().flatten()
         S = project(strs.H0+strs.B)
+        B = project(strs.B)
         TD = project(self.strs.tau_d_plot)
         TB = project(self.strs.tau_b_plot)
         TX = project(self.strs.tau_xx_plot)
@@ -19,16 +20,17 @@ class ModelPlotter(object):
 
         self.plot1 = plot1
         self.plot1.showGrid(x=True, y=True)
-        self.ph0 = self.plot1.plot(self.x, self.strs.B.compute_vertex_values(), pen=bluePlotPen)
+        self.ph0 = self.plot1.plot(self.x, B.compute_vertex_values(), pen=bluePlotPen)
         self.ph100 = self.plot1.plot(self.x, S.compute_vertex_values(), pen=redPlotPen)
         self.ph1 = self.plot1.plot(self.x, S.compute_vertex_values(), pen=whitePlotPen)
-
+        self.ph2 = self.plot1.plot(self.x, BHat.compute_vertex_values(), pen=brownPlotPen)
         self.legend1 = ModelLegend(offset=(-50, 50))
         self.legend1.setParentItem(self.plot1.graphicsItem())
 
         self.legend1.addItem(self.ph0, '<i>B</i>')
         self.legend1.addItem(self.ph100, '<i>S</i><sub>o</sub>')
         self.legend1.addItem(self.ph1, '<i>S</i>')
+        self.legend1.addItem(self.ph2, '<i>Bed</i>')
 
         self.plot2 = plot2
         self.plot2.showGrid(x=True, y=True)

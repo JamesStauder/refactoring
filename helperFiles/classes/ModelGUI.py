@@ -28,7 +28,7 @@ class ModelGUI(QtGui.QMainWindow):
         self.pauseButton.clicked.connect(self.pauseModel)
         self.runModel = IceCube('.data/latestProfile.h5', float(self.timeEndLineEdit.text()),
                                 float(self.timeStepLineEdit.text()))
-        self.plots = ModelPlotter(self.runModel.strs, self.runModel.mesh, self.plot1, self.plot2, self.plot3)
+        self.plots = ModelPlotter(self.runModel.strs, self.runModel.mesh, self.runModel.Bhat, self.plot1, self.plot2, self.plot3)
         self.showMaximized()
         self.run = True
         self.show()

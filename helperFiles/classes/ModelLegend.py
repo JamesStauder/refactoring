@@ -31,7 +31,7 @@ class ModelLegend(LegendItem):
         title           The title to display for this item. Simple HTML allowed.
         ==============  ========================================================
         """
-        label = LabelItem(name, color=(0, 0, 0))
+        label = LabelItem(name, color=(255, 255, 255))
         if isinstance(item, ItemSample):
             sample = item
         else:

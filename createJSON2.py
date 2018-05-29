@@ -17,7 +17,7 @@ def main(argv):
     files = [file for file in glob.glob("*.h5")]
     charts = [True, False]
     size = 100
-    numYears = 4
+    numYears = 500
     timeStep = 1
 
 
@@ -30,7 +30,7 @@ def main(argv):
         
         counter = 1
         for j in charts:
-            chartKey = 'chart' + str(counter)
+            chartKey = 'Chart' + str(counter)
             counter = counter + 1
             data[chartKey] = []
             
@@ -41,7 +41,7 @@ def main(argv):
 
             bedrock = list(bedrock)
             bedrock = bedrock[0::len(bedrock)/size]
-            bedrockKey = 'bedrock ' + chartKey
+            bedrockKey = 'bedrock' + chartKey
             data[bedrockKey] = bedrock
 
             height = project(tempBox.strs.H0+tempBox.strs.B).compute_vertex_values()
@@ -61,20 +61,20 @@ def main(argv):
                 data[chartKey].append(dataToAppend)
 
           #Create the model run json file      
-        for x in range(len(data['chart2'])):
-            for z in range(len(data['chart2'][x])):
-                data['chart2'][x][z] = "{:4.1f}".format(data['chart2'][x][z])
-                data['chart2'][x][z] = float(data['chart2'][x][z])
-        for x in range(len(data['chart1'])):
-            for z in range(len(data['chart1'][x])):
-                data['chart1'][x][z] = "{:4.1f}".format(data['chart1'][x][z])
-                data['chart1'][x][z] = float(data['chart1'][x][z])
-        for x in range(len(data['bedrock chart1'])):
-            data['bedrock chart1'][x] = "{:4.1f}".format(data['bedrock chart1'][x])
-            data['bedrock chart1'][x] = float(data['bedrock chart1'][x])
-        for x in range(len(data['bedrock chart2'])):
-            data['bedrock chart2'][x] = "{:4.1f}".format(data['bedrock chart2'][x])
-            data['bedrock chart2'][x] = float(data['bedrock chart2'][x])
+        for x in range(len(data['Chart2'])):
+            for z in range(len(data['Chart2'][x])):
+                data['Chart2'][x][z] = "{:4.1f}".format(data['Chart2'][x][z])
+                data['Chart2'][x][z] = float(data['Chart2'][x][z])
+        for x in range(len(data['Chart1'])):
+            for z in range(len(data['Chart1'][x])):
+                data['Chart1'][x][z] = "{:4.1f}".format(data['Chart1'][x][z])
+                data['Chart1'][x][z] = float(data['Chart1'][x][z])
+        for x in range(len(data['bedrockChart1'])):
+            data['bedrockChart1'][x] = "{:4.1f}".format(data['bedrockChart1'][x])
+            data['bedrockChart1'][x] = float(data['bedrockChart1'][x])
+        for x in range(len(data['bedrockChart2'])):
+            data['bedrockChart2'][x] = "{:4.1f}".format(data['bedrockChart2'][x])
+            data['bedrockChart2'][x] = float(data['bedrockChart2'][x])
         with open(jsonModelName, 'w') as outfile: 
             json.dump(data, outfile)
             

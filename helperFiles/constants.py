@@ -21,6 +21,7 @@ orangePlotPen = pg.mkPen(color=(255, 128,   0), width=2)
 bluePlotPen = pg.mkPen(color=(0,   0, 255), width=2)
 tealPlotPen = pg.mkPen(color=(0, 204, 204), width=2)
 pinkPlotPen = pg.mkPen(color=(153,   0, 153), width=2)
+brownPlotPen = pg.mkPen(color=(92, 64, 51), width=2)
 
 dataFileName = './data/GreenlandInBedCoord.h5'
 cmFileName = './data/dataCMValues.h5'

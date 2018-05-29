@@ -10,16 +10,6 @@ Last edit Date: 2/02/18
 Purpose: TODO AFTER CLEANUP
 '''
 
-'''
-Notes:
-Reformatting Patrick's tool.
-Current progress:
-greenland: line 0
-dataset_objects.py: DONE -> blackBox and greenland
-dataset class: DONE -> Dataset
-gui.py: DONE -> mainWindow
-'''
-
 
 '''
 Main function

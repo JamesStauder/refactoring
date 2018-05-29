@@ -1,6 +1,8 @@
 from ..support.expressions import *
 from ..support.momentum import *
 from ..support.fenics_optimizations import *
+from ..support.simulation_parameters import softplus
+from ..support.physical_constants import rho,rho_w
 from ..constants import *
 
 import fenics as fc
@@ -10,7 +12,7 @@ import dolfin as df
 Class: IceCube
 Argument list: fileName with all of the data, timeEnd, timeStep
 Purpose: This is the black box that runs the model written by Jesse Johnson. It stores the output in various arrays.
-This can run the model all at once instead of updating a GUI every tick. 
+This can run the model all at once instead of updating a GUI every tick.
 
 LEGEND:
 BB: Bed
@@ -76,23 +78,23 @@ class IceCube():
 
         self.zero_sol = df.Function(self.Q)
 
-        self.S0 = df.Function(self.Q)
-        self.B = df.Function(self.Q)
-        self.H0 = df.Function(self.Q)
-        self.A = df.Function(self.Q)
+        self.Bhat = df.Function(self.Q)
+        self.H0   = df.Function(self.Q)
+        self.A    = df.Function(self.Q)
 
         if average:
-            self.inFile.read(self.S0.vector(), "/surfaceAvg", True)
-            self.inFile.read(self.B.vector(), "/bedAvg", True)
+            self.inFile.read(self.Bhat.vector(), "/bedAvg", True)
             self.inFile.read(self.A.vector(), "/smbAvg", True)
+            self.inFile.read(self.H0.vector(),"/thicknessAvg", True)
         else:
-            self.inFile.read(self.S0.vector(), "/surface", True)
-            self.inFile.read(self.B.vector(), "/bed", True)
+            self.inFile.read(self.Bhat.vector(), "/bed", True)
             self.inFile.read(self.A.vector(), "/smb", True)
+            self.inFile.read(self.H0.vector(),"/thickness", True)
 
-        self.H0.assign(self.S0 - self.B)
 
         self.Hmid = theta * self.H + (1 - theta) * self.H0
+
+        self.B = softplus(self.Bhat,-rho/rho_w*self.Hmid,alpha=0.2) # Is not the bed, it is the lower surface
 
         self.S = self.B + self.Hmid
 
@@ -198,7 +200,7 @@ class IceCube():
         self.assigner_inv.assign([self.un, self.u2n, self.H0], self.U)
         self.times.append(self.t)
 
-        self.BB.append(self.strs.B.compute_vertex_values())
+        self.BB.append(df.project(self.strs.B).compute_vertex_values())
         self.HH.append(self.strs.H0.compute_vertex_values())
         self.TD.append(df.project(self.strs.tau_d_plot).compute_vertex_values())
         self.TB.append(df.project(self.strs.tau_b_plot).compute_vertex_values())
