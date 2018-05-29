@@ -1,5 +1,4 @@
 from scipy.integrate import ode
-
 from Dataset import *
 
 '''
@@ -14,8 +13,7 @@ Last edited: 3/2/18
 '''
 
 
-class FlowIntegrator():
-
+class FlowIntegrator:
     def __init__(self, vxDataSet, vyDataSet):
 
         self.vxDataSet = vxDataSet

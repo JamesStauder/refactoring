@@ -1,6 +1,5 @@
 from PyQt4.QtGui import *
 import math
-
 from Instructions import *
 from FlowIntegrator import *
 from Dataset import *
@@ -8,6 +7,17 @@ from Marker import *
 from ModelGUI import *
 from ..caching.cachingFunctions import *
 import time
+
+'''
+Class: MainWindow
+Argument list:
+Purpose: Create main window for GUI. Has many functions based on what user does
+Return types, values:
+Dependencies: pyQT, dolfin, math
+Creator: James Stauder
+Date created: 1/31/18
+Last edited: 5/29/18
+'''
 
 
 class MainWindow(QMainWindow):
@@ -138,8 +148,8 @@ class MainWindow(QMainWindow):
     Function: addToImageItemContainer
     Argument list: datasetDict
     Purpose: add the different dataset widgets to the imageItemContainer
-    Return types, values: None
-    Dependencies: None
+    Return types, values: 
+    Dependencies: 
     Creator: James Stauder
     Date created: 2/25/18
     Last edited: 3/5/18
@@ -155,21 +165,19 @@ class MainWindow(QMainWindow):
         self.imageItemContainer.addWidget(datasetDict['t2m'].plotWidget)
         self.imageItemContainer.addWidget(datasetDict['smb'].plotWidget)
 
-        for key in datasetDict:
-            datasetDict[key].pathPlotItem.clear()
 
     '''
     Function: changeMap
-    Argument list: index
+    Argument list: 
+        index: index of which map to use
     Purpose: Changes the map to a different colormap
-    Return types, values: None
-    Dependencies: None
+    Return types, values: 
+    Dependencies: 
     Creator: James Stauder
     Date created: 2/25/18
     Last edited: 3/5/18
     '''
 
-    # TODO mouseMove does not work when changing maps
     def changeMap(self, index):
         vr = self.imageItemContainer.currentWidget().getPlotItem().getViewBox().viewRange()
         indexToDatasetDict = {
@@ -204,13 +212,15 @@ class MainWindow(QMainWindow):
 
     '''
      Function: mouseClick
-     Argument list: None
-     Purpose: Either select a marker or create new flowline
+     Argument list: 
+        e: event trigger from mouse being clicked
+     Purpose: 
+        Create a new flowline or move a previous flowline
      Return types, values: None
      Dependencies: None
      Creator: James Stauder
      Date created: 2/25/18
-     Last edited: 3/5/18
+     Last edited: 5/29/18
      '''
 
     def mouseClick(self, e):
@@ -219,8 +229,8 @@ class MainWindow(QMainWindow):
         if self.isMarkerSelected is False:
 
             # Check to see if click selects a marker. If so memoize the marker and the flowline Position
-            # This block checks every marker along flowline and reintegrates up. Seems ill advised as
-            # because of new averaging method
+            # This block checks every marker along flowline and reintegrates up. Commented out with new
+            # averaging method
             '''
             for i in range(len(self.flowlineMarkers)):
                 for j in range(len(self.flowlineMarkers[i])):
@@ -294,15 +304,16 @@ class MainWindow(QMainWindow):
 
     '''
     Function: mouseMove
-    Argument list: None
+    Argument list: 
     Purpose: This function is used to move the marker that is selected and create a new integration path. 
-    Return types, values: None
-    Dependencies: None
+    Return types, values: 
+    Dependencies: 
     Creator: James Stauder
     Date created: 2/25/18
     Last edited: 3/9/18
-    TODO: This can be a bit confusing to read. The code is kind of wordy. We could possibly redraw flowline with the 
-    display Markers function but that would require some changes to the Markers function to take an index.
+    TODO: 
+        This can be a bit confusing to read. The code is kind of wordy. We could possibly redraw flowline with the 
+        display Markers function but that would require some changes to the Markers function to take an index.
     '''
 
     def mouseMove(self, e):
@@ -368,12 +379,15 @@ class MainWindow(QMainWindow):
 
     '''
     Function: calcVelocityWidth
-    Argument list: None
-    Purpose: Calculates velocity width by connecting the ith marker of each shear margin. This displays lines between
-    each displayed marker as well. This will also average both the x and y coordinates of the shear margins(index 0)
-    and integrate a flowline starting from that center point. 
-    Return types, values: None
-    Dependencies: Two selected shear margins. This is susceptible to user errors
+    Argument list: 
+    Purpose: 
+        Calculates velocity width by connecting the ith marker of each shear margin. This displays lines between
+        each displayed marker as well. This also does an averaging scheme where we create lines between the two shear
+        margins starting at the terminus. The number of lines is determined by numberOfLines. The averaging is done
+        by averaging the ith index of each line together.
+        TODO: Reference paper when written
+    Return types, values: 
+    Dependencies: Two selected shear margins. This is susceptible to user errors. TODO: Fix the errors
     Creator: James Stauder
     Date created: 2/25/18
     Last edited: 3/9/18
@@ -463,11 +477,11 @@ class MainWindow(QMainWindow):
         interpolateFlowlineData(self.datasetDict, self.flowlines,midFlowline, self.flowlineDistance,
                                 float(self.spatialResolutionLineEdit.text()), self.profileLineEdit.text())
         print "Profile creation took :", time.time() - t0
-        # self.resetButton.setEnabled(True)
 
     '''
     Function: displayMarkers
-    Argument list: flowline 
+    Argument list: 
+        flowline: flowline in which to display
     Purpose: Takes a flowline of markers and displays them on the gui
     Return types, values: None
     Dependencies: None
@@ -530,8 +544,8 @@ class MainWindow(QMainWindow):
 
     # TODO: Does this have to be tied to mw? Can this be changed in some way?
     def createIntegrator(self):
-        vx = Dataset('VX', tealPlotPen)
-        vy = Dataset('VY', tealPlotPen)
+        vx = Dataset('VX')
+        vy = Dataset('VY')
         self.flowIntegrator = FlowIntegrator(vx, vy)
 
     def runModel(self):

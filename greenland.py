@@ -1,12 +1,11 @@
 from helperFiles.classes.MainWindow import *
-from helperFiles.classes.BlackBox import *
 from helperFiles.createDatasets import *
 
 '''
 Creator: James Stauder
 Creation Date: 1/30/18
-Last edit Date: 2/02/18
-Purpose: TODO AFTER CLEANUP
+Last edit Date: 5/29/18
+Purpose: GUI application that allows profile creation and model running on Greenland Glaciers.
 '''
 
 
@@ -45,7 +44,7 @@ def main(argv):
         sys.exit(app.exec_())
 
 '''
-Function: printMainMenu:
+Function: printMainMenu
 Argument list: None
 Purpose: Print the main menu
 Return types, values: None

@@ -19,9 +19,8 @@ Last edited: 3/2/18
 
 
 class Dataset:
-    def __init__(self, name, pen):
+    def __init__(self, name):
         self.name = name
-        self.pen = pen
 
         bed_xarray = linspace(map['proj_x0'], map['proj_x1'], map['x1'], endpoint=True)
         bed_yarray = linspace(map['proj_y1'], map['proj_y0'], map['y1'], endpoint=True)
@@ -41,7 +40,6 @@ class Dataset:
         # Dataset for backend web
         if name != 'VX' and name != 'VY':
             createColorMap(self)
-            self.pathPlotItem = pg.PlotDataItem([0, 0], pen=self.pen)
 
     def setData(self, name):
         dataFile = h5py.File(dataFileName, 'r')

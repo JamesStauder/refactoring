@@ -2,11 +2,11 @@ import time
 from classes.Dataset import *
 
 '''
-Function: createInitialDataSets:
-Argument list:
-Purpose:
+Function: createInitialDataSets
+Argument list: 
+Purpose: Create dictionary of datasets
 Return types, values:
-Dependencies:
+Dependencies:  h5py, Dataset Class
 Creator: James Stauder
 Date created: 1/31/18
 Last edited: 1/31/18
@@ -25,22 +25,22 @@ def createInitialDatasets():
     map['proj_x1'] = dataFile['x'][:][-1]
     map['proj_y1'] = dataFile['y'][:][-1]
 
-    velocity = Dataset('velocity', greenPlotPen)
+    velocity = Dataset('velocity')
     datasetDict['velocity'] = velocity
 
-    smb = Dataset('smb', redPlotPen)
+    smb = Dataset('smb')
     datasetDict['smb'] = smb
 
-    bed = Dataset('bed', bluePlotPen)
+    bed = Dataset('bed')
     datasetDict['bed'] = bed
 
-    surface = Dataset('surface', greyPlotPen)
+    surface = Dataset('surface')
     datasetDict['surface'] = surface
 
-    thickness = Dataset('thickness', orangePlotPen)
+    thickness = Dataset('thickness')
     datasetDict['thickness'] = thickness
 
-    t2m = Dataset('t2m', tealPlotPen)
+    t2m = Dataset('t2m')
     datasetDict['t2m'] = t2m
 
     dataFile.close()

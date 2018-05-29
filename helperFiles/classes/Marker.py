@@ -3,12 +3,12 @@ from ..math_functions import *
 '''
 Class: Marker
 Argument list: 
-cx - Color coordinate x position
-cy - Color coordinate y position
-dx - Projection x position
-dy - Projection y position
+    cx - Color coordinate x position
+    cy - Color coordinate y position
+    dx - Projection x position
+    dy - Projection y position
 plotWidget - Which widget to plot to
-plotCross - Boolean on whether or not to play
+plotCross - Boolean on whether or not to plot
 
 Purpose: This is the marker class that is used to create the x markers on the GUI
 Dependencies: pyQT
@@ -51,11 +51,12 @@ class Marker:
 
     '''
     Function: updateCross
-    Argument list: None
-    Purpose: updates the dx and dy coordinates of the cross. This is called when the cx and cy coordinates change(when
-    the user moves the marker.) This then also moves the bars around
-    Return types, values: None
-    Dependencies: None
+    Argument list: 
+    Purpose: 
+        updates the dx and dy coordinates of the cross. This is called when the cx and cy coordinates change(when
+        the user moves the marker.) This then also moves the bars around
+    Return types, values: 
+    Dependencies: 
     Creator: Patrick Kreitzberg
     Date created: Unknown
     Last edited: 3/7/18
@@ -76,13 +77,13 @@ class Marker:
     '''
     Function: checkClicked
     Argument list: 
-    pos - x and y coordinates of the clicked position
+        pos - x and y coordinates of the clicked position
     Purpose: checks to see if the pos argument is on the marker
     Return types, values: 
-    Boolean
-    True - if marker is clicked
-    False - if marker is not clicked
-    Dependencies: None
+        Boolean
+        True - if marker is clicked
+        False - if marker is not clicked
+    Dependencies: 
     Creator: Patrick Kreitzberg
     Date created: Unknown
     Last edited: 3/7/18
@@ -96,11 +97,11 @@ class Marker:
     '''
     Function: setLine
     Argument list: 
-    line - the black line between markers
-    index - which index does the line belong to (index 0 is marker previous, index 1 is marker next)
+        line - the black line between markers
+        index - which index does the line belong to (index 0 is marker previous, index 1 is marker next)
     Purpose: set the lines of the marker to nearby markers in an organized format
-    Return types, values: None
-    Dependencies: None
+    Return types, values: 
+    Dependencies: 
     Creator: Patrick Kreitzberg
     Date created: Unknown
     Last edited: 3/7/18

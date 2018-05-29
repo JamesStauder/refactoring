@@ -4,8 +4,8 @@ from pyqtgraph.graphicsItems.LegendItem import ItemSample
 '''
 Class: ModelLegend
 Argument list: 
-size - Size of Legend
-offset - offset of Legend
+    size - Size of Legend
+    offset - offset of Legend
 Purpose: These are the legends for the model plotter
 Dependencies: pyqtgraph LegendItem, LabelItem, ItemSample
 Creator: Patrick Kreitzberg

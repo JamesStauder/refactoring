@@ -1,4 +1,5 @@
 from constants import *
+
 '''
 colorToProj:  color -> projected
 dataToProj:   data -> projected
@@ -19,12 +20,12 @@ def colorToProj(x, y):
             print 'ERROR IN PROJ COORD'
             return -1
     else:
-        return ((150*x) + float(map['cmap_proj_x0'])), ((-150*y) + float(map['cmap_proj_y0']))
+        return ((150 * x) + float(map['cmap_proj_x0'])), ((-150 * y) + float(map['cmap_proj_y0']))
 
 
 def dataToProj(x, y):
-    j,k = colorToProj(x, y)
-    return dataToColor(j,k)
+    j, k = colorToProj(x, y)
+    return dataToColor(j, k)
 
 
 def colorCoord(x, y):
@@ -38,17 +39,17 @@ def colorCoord(x, y):
             print 'ERROR IN MAP COORD'
             return -1
     else:
-        return ((-float(map['cmap_proj_x0']) + x)/150.0), (-(-float(map['cmap_proj_y0']) + y)/150.0)
+        return ((-float(map['cmap_proj_x0']) + x) / 150.0), (-(-float(map['cmap_proj_y0']) + y) / 150.0)
 
 
 def dataToColor(x, y):
     # turns colormap data point into data point
-    return x*(float(map['cmap_x1'])/float(map['x1'])), y*(float(map['cmap_y1'])/float(map['y1']))
+    return x * (float(map['cmap_x1']) / float(map['x1'])), y * (float(map['cmap_y1']) / float(map['y1']))
 
 
 def colorToData(x, y):
     # turns colormap data point into data point
-    return x*(float(map['x1'])/float(map['cmap_x1'])), y*(float(map['y1'])/float(map['cmap_y1']))
+    return x * (float(map['x1']) / float(map['cmap_x1'])), y * (float(map['y1']) / float(map['cmap_y1']))
 
 
 def dataCoord(x, y):

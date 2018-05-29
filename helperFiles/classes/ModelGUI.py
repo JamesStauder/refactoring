@@ -1,8 +1,19 @@
 from pyqtgraph.Qt import QtGui
 from PyQt4 import QtCore
-
 from BlackBox import *
 from ModelPlotter import *
+
+'''
+Class: ModelGUI
+Argument list: 
+    parent -> MainWindow parent
+Purpose: Create gui for the model run
+Return types, values:
+Dependencies: pyqtGraph
+Creator: James Stauder
+Date created: 3/29/18
+Last edited: 5/29/18
+'''
 
 
 class ModelGUI(QtGui.QMainWindow):
@@ -39,6 +50,7 @@ class ModelGUI(QtGui.QMainWindow):
         self.show()
         self.closeEvent = self.windowClosed
 
+    # Pause model run when window closed
     def windowClosed(self, e):
         if self.run:
             self.run = False
@@ -90,6 +102,7 @@ class ModelGUI(QtGui.QMainWindow):
         self.leftPanelLayout.addWidget(self.slider)
         self.leftPanelLayout.addWidget(self.sliderLabel)
 
+    #run Model
     def runModelEvent(self):
         self.runButton.setEnabled(False)
         self.pauseButton.setEnabled(True)
@@ -99,6 +112,7 @@ class ModelGUI(QtGui.QMainWindow):
             self.plots.refreshPlot(self.runModel)
             pg.QtGui.QApplication.processEvents()
 
+    # pause Model
     def pauseModel(self):
         if self.run:
             self.run = False

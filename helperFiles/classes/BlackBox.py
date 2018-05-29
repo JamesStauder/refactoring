@@ -2,7 +2,7 @@ from ..support.expressions import *
 from ..support.momentum import *
 from ..support.fenics_optimizations import *
 from ..support.simulation_parameters import softplus
-from ..support.physical_constants import rho,rho_w
+from ..support.physical_constants import rho, rho_w
 from ..constants import *
 
 import fenics as fc
@@ -79,22 +79,21 @@ class BlackBox():
         self.zero_sol = df.Function(self.Q)
 
         self.Bhat = df.Function(self.Q)
-        self.H0   = df.Function(self.Q)
-        self.A    = df.Function(self.Q)
+        self.H0 = df.Function(self.Q)
+        self.A = df.Function(self.Q)
 
         if average:
             self.inFile.read(self.Bhat.vector(), "/bedAvg", True)
             self.inFile.read(self.A.vector(), "/smbAvg", True)
-            self.inFile.read(self.H0.vector(),"/thicknessAvg", True)
+            self.inFile.read(self.H0.vector(), "/thicknessAvg", True)
         else:
             self.inFile.read(self.Bhat.vector(), "/bed", True)
             self.inFile.read(self.A.vector(), "/smb", True)
-            self.inFile.read(self.H0.vector(),"/thickness", True)
-
+            self.inFile.read(self.H0.vector(), "/thickness", True)
 
         self.Hmid = theta * self.H + (1 - theta) * self.H0
 
-        self.B = softplus(self.Bhat,-rho/rho_w*self.Hmid,alpha=0.2) # Is not the bed, it is the lower surface
+        self.B = softplus(self.Bhat, -rho / rho_w * self.Hmid, alpha=0.2)  # Is not the bed, it is the lower surface
 
         self.S = self.B + self.Hmid
 

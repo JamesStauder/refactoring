@@ -2,6 +2,21 @@ from dolfin import project
 from ..constants import *
 from ModelLegend import *
 
+'''
+Class: modelPlotter
+Argument list: 
+    strs: stresses object
+    mesh: mesh
+    BHat: Bedrock
+    plot1 - plot3: different plot objects
+Purpose: Plot the values from the model run
+Return types, values:
+Dependencies:
+Creator: James Stauder
+Date created: 2/15/18
+Last edited: 2/15/18
+'''
+
 
 class ModelPlotter(object):
     def __init__(self, strs, mesh, BHat, plot1, plot2, plot3):
@@ -61,6 +76,17 @@ class ModelPlotter(object):
         self.ph8 = self.plot3.plot(self.x, ub.compute_vertex_values(), pen=greenPlotPen)
         self.legend3.addItem(self.ph7, '&mu;<sub>s</sub>')
         self.legend3.addItem(self.ph8, '&mu;<sub>b</sub>')
+
+    '''
+    Function: ModelPlotter.refreshPlot()
+    Argument list: box -> blackBox object
+    Purpose: update plat with next step of model run
+    Return types, values: 
+    Dependencies: 
+    Creator: James Stauder
+    Date created: 2/31/18
+    Last edited: 2/31/18
+    '''
 
     def refreshPlot(self, box):
         BB, HH, TD, TB, TX, TY, TZ, us, ub = box.runNextStep()
