@@ -268,6 +268,7 @@ class MainWindow(QMainWindow):
                 self.integratorPerMarker = int(math.ceil(10000 / (float(self.spatialResolutionLineEdit.text()))))
                 xClickPosition = e.pos().x()
                 yClickPosition = e.pos().y()
+
                 dx, dy = colorToProj(xClickPosition, yClickPosition)
 
                 # Create new flowline
@@ -278,6 +279,10 @@ class MainWindow(QMainWindow):
 
                 newFlowline = self.flowIntegrator.integrate(dx, dy, newFlowline, 0,
                                                             float(self.spatialResolutionLineEdit.text()))
+
+                if None in newFlowline:
+                    print "Integration Error. Try Again"
+                    return
 
                 # Create a flowline of markers spaced out based on the IntegratorPerMarker
                 newFlowlineMarkers = newFlowline[::self.integratorPerMarker]
@@ -317,6 +322,7 @@ class MainWindow(QMainWindow):
     '''
 
     def mouseMove(self, e):
+
         if self.isMarkerSelected:
 
             # change the x , y values of the marker at the selected index
@@ -395,7 +401,6 @@ class MainWindow(QMainWindow):
 
     def calcVelocityWidth(self):
 
-        # Get center point at terminus between two shear margins
         x1, y1 = self.flowlineMarkers[0][0].cx, self.flowlineMarkers[0][0].cy
         x2, y2 = self.flowlineMarkers[1][0].cx, self.flowlineMarkers[1][0].cy
 
@@ -407,11 +412,12 @@ class MainWindow(QMainWindow):
 
         # Create center flowlines
         t0 = time.time()
-        for _ in range(0, numberOfLines - 1):
+        for _ in range(0, numberOfLines-1):
             currX = currX + dx
             currY = currY + dy
 
             xProj, yProj = colorToProj(currX, currY)
+
             newLine = []
 
             for i in range(self.lengthOfFlowline):
@@ -419,7 +425,13 @@ class MainWindow(QMainWindow):
             newLine[0] = [xProj, yProj]
             newLine = self.flowIntegrator.integrate(xProj, yProj, newLine, 0,
                                                     float(self.spatialResolutionLineEdit.text()))
-            self.flowlines.append(newLine)
+
+            #This checks to see if integration worked
+            if None not in newLine:
+                self.flowlines.append(newLine)
+            else:
+                print "integration error on averaging method. Ommitting line"
+
 
             '''
             #Code to create Markers for these flowlines. 
@@ -431,7 +443,7 @@ class MainWindow(QMainWindow):
                 newFlowlineMarkers[i] = Marker(cx, cy, dataX, dataY, self.imageItemContainer.currentWidget())
             self.displayMarkers(newFlowlineMarkers)
             self.flowlineMarkers.append(newFlowlineMarkers)
-            '
+            
 
 
         for i in range(len(self.flowlineMarkers[0])):
@@ -458,7 +470,10 @@ class MainWindow(QMainWindow):
             self.imageItemContainer.currentWidget().addItem(self.flowlineMarkers[1][i].lines[0])
             '''
 
+
+        print "Ommitted ", numberOfLines - len(self.flowlines) + 1, " lines. Out of a possible ", numberOfLines-1
         midFlowline = self.flowlines[((len(self.flowlines) - 2) / 2) + 2]
+
 
         newFlowlineMarkers = midFlowline[::self.integratorPerMarker]
 

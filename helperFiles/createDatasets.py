@@ -24,7 +24,6 @@ def createInitialDatasets():
     map['y1'] = len(dataFile['bed'][:])
     map['proj_x1'] = dataFile['x'][:][-1]
     map['proj_y1'] = dataFile['y'][:][-1]
-
     velocity = Dataset('velocity')
     datasetDict['velocity'] = velocity
 
