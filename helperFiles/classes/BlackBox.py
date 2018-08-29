@@ -7,6 +7,8 @@ from ..constants import *
 
 import fenics as fc
 import dolfin as df
+import os, sys
+
 
 '''
 Class: IceCube
@@ -36,6 +38,10 @@ Last edited: 3/2/18
 # TODO: Unit Test: Calculating outside of range
 class BlackBox():
     def __init__(self, fileName, timeEnd, timeStep, average=False):
+
+
+
+        fc.set_log_active(False)
 
         self.times = []
         self.BB = []
@@ -174,6 +180,8 @@ class BlackBox():
         self.dtFloat = float(timeStep)
 
         self.inFile.close()
+
+
 
     def runAllSteps(self):
         while self.t < self.timeEnd:

@@ -405,6 +405,7 @@ class MainWindow(QMainWindow):
         x2, y2 = self.flowlineMarkers[1][0].cx, self.flowlineMarkers[1][0].cy
 
         numberOfLines = 100
+
         dx = (x2 - x1) / numberOfLines
         dy = (y2 - y1) / numberOfLines
         currX = x1
@@ -468,7 +469,7 @@ class MainWindow(QMainWindow):
             self.flowlineMarkers[1][i].setLine(pg.PlotDataItem(xValues, yValues, connect='all', pen=skinnyBlackPlotPen),
                                                0)
             self.imageItemContainer.currentWidget().addItem(self.flowlineMarkers[1][i].lines[0])
-            '''
+        '''
 
 
         print "Ommitted ", numberOfLines - len(self.flowlines) + 1, " lines. Out of a possible ", numberOfLines-1
@@ -541,6 +542,8 @@ class MainWindow(QMainWindow):
         self.textOut.clear()
         selectedMarkerX = self.whichMarkerSelected.dx
         selectedMarkerY = self.whichMarkerSelected.dy
+
+        self.textOut.append(str((self.whichMarkerSelected.dx, self.whichMarkerSelected.dy)))
 
         for x in self.maps:
             stringOut = str(self.datasetDict[x.lower()].getInterpolatedValue(selectedMarkerX, selectedMarkerY))
